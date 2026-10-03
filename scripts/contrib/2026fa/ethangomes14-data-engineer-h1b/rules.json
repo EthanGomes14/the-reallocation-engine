@@ -1,0 +1,53 @@
+{
+  "_about": "Decision rules for the data-engineer-h1b triage prototype. Every value here is a chosen rule, not a record. Provenance per block in _source. Changing a value here changes outcomes: log the change in CHANGE-BRIEF.md's revisions.",
+  "family_patterns": {
+    "_source": "model-judgment (title family proposed by Claude, accepted by the author 2026-10-03)",
+    "value": [
+      "data engineer",
+      "etl (developer|engineer)",
+      "data warehous\\w* (engineer|developer)",
+      "big data (engineer|developer)",
+      "analytics engineer",
+      "data platform engineer",
+      "data pipeline",
+      "data integration (engineer|developer)",
+      "data infrastructure engineer",
+      "business intelligence engineer",
+      "\\bbi engineer",
+      "database developer",
+      "software engineer.{0,5}data"
+    ]
+  },
+  "exclusion_patterns": {
+    "_source": "model-judgment (wrong level or different job for a new-grad Data Engineer)",
+    "value": ["manager", "director", "head of", "\\bvp\\b", "analyst", "specialist", "architect", "scientist"]
+  },
+  "tiers": {
+    "_source": "model-judgment (rule proposed by Claude; p values copy the tier values in data/examples/ch11-roles.json)",
+    "value": {
+      "proven": { "min_approvals": 10, "p": 0.9 },
+      "likely": { "min_approvals": 1, "p": 0.6 },
+      "possible": { "min_approvals": 1, "p": 0.4 }
+    }
+  },
+  "sponsorship_source_label": {
+    "_source": "your-input (author's decision 2026-10-03: the score is Claude's rule applied to records, so it is labelled model-judgment)",
+    "value": "model-judgment"
+  },
+  "timeline": {
+    "_source": "your-input",
+    "value": { "closed_factor": 0, "tight_factor": 0.5, "open_factor": 1, "tight_window_days": 10 }
+  },
+  "liveness": {
+    "_source": "your-input (a liveness check older than this is treated as stale)",
+    "value": { "max_age_days": 7 }
+  },
+  "name_suffixes": {
+    "_source": "your-input (legal-form words removed before exact name matching)",
+    "value": ["inc", "incorporated", "llc", "corp", "corporation", "co", "company", "ltd", "limited", "lp", "llp", "plc", "pbc"]
+  },
+  "network_list_size": {
+    "_source": "your-input",
+    "value": 10
+  }
+}

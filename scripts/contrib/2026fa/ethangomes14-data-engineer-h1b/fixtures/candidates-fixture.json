@@ -1,0 +1,17 @@
+{
+  "_about": "Test fixture: invented companies and example.com URLs. One row per named failure case in CHANGE-BRIEF.md §4, plus happy-path rows.",
+  "candidates": [
+    { "role_id": "acme-de", "company": "Acme Data", "title": "Data Engineer", "url": "https://jobs.example.com/acme/1", "fit": { "p": 0.7, "reason": "fixture" } },
+    { "role_id": "acme-mgr", "company": "Acme Data", "title": "Engineering Manager, Data", "url": "https://jobs.example.com/acme/2", "fit": { "p": 0.2, "reason": "fixture: title outside the family" } },
+    { "role_id": "smallco-ae", "company": "SmallCo", "title": "Analytics Engineer", "url": "https://jobs.example.com/smallco/1", "fit": { "p": 0.7, "reason": "fixture" } },
+    { "role_id": "bigsponsor-de", "company": "BigSponsor Corp.", "title": "Data Engineer", "url": "https://jobs.example.com/bigsponsor/1", "fit": { "p": 0.7, "reason": "fixture: F3 no family title" } },
+    { "role_id": "emptyco-de", "company": "EmptyCo", "title": "Data Engineer", "url": "https://jobs.example.com/emptyco/1", "fit": { "p": 0.7, "reason": "fixture: F2 no H-1B data" } },
+    { "role_id": "notreal-de", "company": "Not A Real Company", "title": "Data Engineer", "url": "https://jobs.example.com/notreal/1", "fit": { "p": 0.7, "reason": "fixture: F1 not in CSV" } },
+    { "role_id": "twin-de", "company": "Twin Name", "title": "Data Engineer", "url": "https://jobs.example.com/twin/1", "fit": { "p": 0.7, "reason": "fixture: ambiguous" } },
+    { "role_id": "acme-variant-de", "company": "Acme Data Holdings", "title": "Data Engineer", "url": "https://jobs.example.com/acme-holdings/1", "fit": { "p": 0.7, "reason": "fixture: F6 name variant" } },
+    { "role_id": "ghosthire-de", "company": "GhostHire", "title": "Data Engineer", "url": "https://jobs.example.com/ghosthire/1", "fit": { "p": 0.8, "reason": "fixture: expired posting" } },
+    { "role_id": "quoted-etl", "company": "Quoted, Comma Inc", "title": "ETL Developer", "url": "https://jobs.example.com/quoted/1", "fit": { "p": 0.7, "reason": "fixture: CSV quoting" } },
+    { "role_id": "nolive-de", "company": "Acme Data", "title": "Data Engineer", "url": "https://jobs.example.com/acme/never-checked", "fit": { "p": 0.7, "reason": "fixture: F7 no liveness evidence" } },
+    { "role_id": "bad-row", "company": "Acme Data", "title": "Data Engineer", "url": "https://jobs.example.com/acme/1" }
+  ]
+}

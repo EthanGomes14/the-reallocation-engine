@@ -1,0 +1,19 @@
+# checked: 2026-10-03
+# command: npm run ats:liveness -- <the 7 URLs below>
+
+> the-reallocation-engine@1.0.0 ats:liveness
+> node scripts/ats/check-liveness.mjs https://job-boards.greenhouse.io/sigmacomputing/jobs/7809974003 https://www.klaviyo.com/careers/jobs/7737707003?gh_jid=7737707003 https://job-boards.greenhouse.io/gusto/jobs/8099751 https://boards.greenhouse.io/embed/job_app?for=gemini&token=8076827&gh_jid=8076827 https://careers.airbnb.com/positions/8224032?gh_jid=8224032 https://boards.greenhouse.io/robinhood/jobs/4738660?t=gh_src=&gh_jid=4738660 https://stripe.com/jobs/search?gh_jid=7230670
+
+Checking 7 URL(s)...
+
+✅ active     https://job-boards.greenhouse.io/sigmacomputing/jobs/7809974003
+✅ active     https://www.klaviyo.com/careers/jobs/7737707003?gh_jid=7737707003
+✅ active     https://job-boards.greenhouse.io/gusto/jobs/8099751
+✅ active     https://boards.greenhouse.io/embed/job_app?for=gemini&token=8076827&gh_jid=8076827
+✅ active     https://careers.airbnb.com/positions/8224032?gh_jid=8224032
+✅ active     https://boards.greenhouse.io/robinhood/jobs/4738660?t=gh_src=&gh_jid=4738660
+⚠️ uncertain  https://stripe.com/jobs/search?gh_jid=7230670
+           content present but no visible apply control found
+
+Results: 6 active  0 expired  1 uncertain
+# ats:liveness exited non-zero (it exits 1 if any URL is expired or uncertain)

@@ -1,0 +1,17 @@
+# checked: 2026-10-01
+# Fixture shaped like `npm run ats:liveness` stdout. Every URL uses the reserved example.com domain.
+Checking 9 URL(s)...
+
+✅ active     https://jobs.example.com/acme/1
+✅ active     https://jobs.example.com/acme/2
+✅ active     https://jobs.example.com/smallco/1
+✅ active     https://jobs.example.com/bigsponsor/1
+✅ active     https://jobs.example.com/emptyco/1
+✅ active     https://jobs.example.com/notreal/1
+✅ active     https://jobs.example.com/twin/1
+✅ active     https://jobs.example.com/acme-holdings/1
+❌ expired    https://jobs.example.com/ghosthire/1
+           page shows "this job is no longer available"
+✅ active     https://jobs.example.com/quoted/1
+
+Results: 9 active  1 expired  0 uncertain
