@@ -81,7 +81,7 @@ Strongest Data Engineer-family sponsors **not** on your list (56 Proven-tier in 
 
 ## Run record
 
-- Status: complete · mode: sample · evaluated as of 2026-10-03 · generated 2026-10-03T22:53:59.128Z
+- Status: complete · mode: sample · evaluated as of 2026-10-03 · generated 2026-10-03T23:36:50.447Z
 - candidates: `scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/samples/candidates-2026-10-03.json` (sha256 4fdb34405d0f…)
 - liveness_log: `scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/samples/liveness-2026-10-03.txt` (sha256 508474b74ff2…), checked 2026-10-03
 - persona: `scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/fixtures/persona-electrifier.json`

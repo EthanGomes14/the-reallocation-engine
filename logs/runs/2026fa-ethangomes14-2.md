@@ -1,4 +1,4 @@
-## 2026-10-03 — data-engineer-h1b triage v0.2.0: Greenhouse cross-check (sample + break test)
+## 2026-10-03 — data-engineer-h1b screen v0.2.0: Greenhouse cross-check (sample + break test)
 
 - **Recipe:** recipes/cases/2026fa/ethangomes14-data-engineer-h1b.md v0.2.0
 - **Inputs:**
@@ -12,12 +12,12 @@
   - `node …/fetch-greenhouse-status.mjs --candidates …/candidates-2026-10-03.json --candidates …/candidates-ghost-2026-10-03.json` → 7 × `200 exists`, 1 × `404 gone` (airbnb/1)
   - `node …/triage.mjs --today 2026-10-03`
   - `node …/triage.mjs --today 2026-10-03 --candidates …/candidates-ghost-2026-10-03.json --liveness …/liveness-ghost-2026-10-03.txt --out-dir course/2026fa/submissions/ethangomes14/runs/triage-ghost`
-- **Outputs:** course/2026fa/submissions/ethangomes14/runs/triage-sample/ (regenerated, now with a priority list) · runs/triage-ghost/
+- **Outputs:** course/2026fa/submissions/ethangomes14/runs/screen-sample/ (regenerated, now with a priority list) · runs/screen-ghost/
 - **Result:**
   - Sample: Apply 3 · Consider 1 · Skip 1 · unscored 2, unchanged from v0.1.0; 7/7 Greenhouse-checked.
   - Ghost: 1 → Skip, `closed_by: greenhouse-api-404`.
   - Tests 15/15 (was 12). Invariant violations 0.
-- **Gate decisions:** G2 now has a machine cross-check for Greenhouse links; opening links by hand still applies to everything else. Ethan Gomes's re-run and attestation cover v0.1.0; **v0.2.0 needs his re-run** of the triage and tests.
+- **Gate decisions:** G2 now has a machine cross-check for Greenhouse links; opening links by hand still applies to everything else. Ethan Gomes's re-run and attestation cover v0.1.0; v0.2.0 was superseded before Ethan re-ran it; his re-runs at v0.3.1 and v0.4.0 are recorded in logs 4 and 5.
 - **Open issues:**
   - Greenhouse only (no Lever, Ashby or Workday).
   - Company-hosted links need `greenhouse_board` supplied by hand.

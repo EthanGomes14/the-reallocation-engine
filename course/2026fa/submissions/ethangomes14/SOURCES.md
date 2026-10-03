@@ -69,7 +69,7 @@ No other students' work and no human collaborators were used.
   - asked Claude to explain each git command (`remote add upstream`, renaming a branch) before letting it run
   - opened the sample run's JSON log and the worked run to see the actual output
   - confirmed which GitHub account and remote would be used before allowing any push
-  - re-ran the screen and the tests on my own laptop twice: at v0.1.0 (12 tests) and again at v0.3.1 after the changes and the rename (13 tests), with the same results both times: same results (Apply 3 · Consider 1 · Skip 1 · unscored 2; 12/12 pass)
+  - re-ran the screen and the tests on my own laptop twice: at v0.1.0 (12 tests) and again at v0.3.1 after the changes and the rename (13 tests), and at v0.4.0 after the timeline gate was restored (15 tests), with the same results every time: same results (Apply 3 · Consider 1 · Skip 1 · unscored 2; 12/12 pass)
   - hand-checked the top Apply result against the raw CSV: `SIGMA COMPUTING INC` shows 136.0 approvals and "Senior Analytics Engineer" among its titles, matching the report
   - opened all six "active" job links from the report (gate G2); each opened the listed job
 - **Still open for me:**

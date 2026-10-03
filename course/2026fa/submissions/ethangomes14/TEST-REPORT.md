@@ -1,4 +1,4 @@
-# Test Report — Data Engineer H-1B sponsor triage
+# Test Report — Data Engineer H-1B sponsor screen
 
 ## Executive summary
 
@@ -127,7 +127,7 @@ $ git diff --stat -- course/
 
 The only difference from the committed outputs is one line in each file: the `generated_at` timestamp. All results are identical. No tracked file outside this contribution's folders was written.
 
-Full per-posting output: `runs/triage-sample/triage-report.md`, pasted in `WORKED-RUN.md`.
+Full per-posting output: `runs/screen-sample/screen-report.md`, pasted in `WORKED-RUN.md`.
 
 ## 4. Offline tests (clean checkout of `acd2286`)
 
@@ -276,7 +276,7 @@ Every path is under `course/2026fa/submissions/ethangomes14/`, `recipes/cases/20
 
 ## 11. Addendum — v0.2.0: Greenhouse liveness cross-check (2026-10-03)
 
-Built at the author's request to close the recipe's `[TODO: DEV]` for the liveness false positive (§5, F4). New network step: `fetch-greenhouse-status.mjs`, allowed host `boards-api.greenhouse.io` only. The triage itself stays offline and reads the saved answers.
+Built at the author's request to close the recipe's `[TODO: DEV]` for the liveness false positive (§5, F4). New network step: `fetch-greenhouse-status.mjs`, allowed host `boards-api.greenhouse.io` only. The screen itself stays offline and reads the saved answers.
 
 **The false positive, reproduced first:**
 
@@ -306,7 +306,7 @@ $ node scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/fetch-greenhouse-st
 [exit 0]
 ```
 
-**The triage with the cross-check:**
+**The screen with the cross-check:**
 
 ```
 $ node scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/triage.mjs --today 2026-10-03
@@ -450,3 +450,119 @@ $ node --test scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/sponsor-scre
 ```
 
 The sample results are unchanged. The post-deadline run shows the gate working again: all 5 scored postings Skip at slack −57 days. The cross-check reports "0 checked" there because the 2026-10-03 API file is more than 7 days older than the pretend date, so it is treated as stale and ignored, as designed.
+
+## 15. Final clean checkout — v0.4.0, cloned from GitHub (2026-10-03)
+
+The pushed branch (`7ac40ed`) was cloned fresh from `https://github.com/EthanGomes14/the-reallocation-engine.git` into an empty scratch folder, with `npm install` run there. Every check below ran in that clone. This supersedes §2, §4 and §7, which were taken on v0.1.0.
+
+```
+$ git clone --branch contrib/2026fa-ethangomes14-data-engineer-h1b https://github.com/EthanGomes14/the-reallocation-engine.git && npm install
+$ git log --oneline -1
+7ac40ed feat: sponsor-screen v0.4.0 — Greenhouse liveness cross-check, priority list, timeline gate, two proposed TODOs; record Ethan's checks
+
+$ npm run doctor   (tail)
+PRIVACY (no personal data committed)
+  ✓ no private/PII paths are tracked
+
+RECIPES (33)
+  with lifecycle frontmatter: 33   missing: 0
+  by status: DRAFT 28 · RUNNABLE-SAMPLE 4 · RUNNABLE-LIVE  # DRAFT | SPECIFIED | RUNNABLE-SAMPLE | RUNNABLE-LIVE | VERIFIED 1
+  open TODOs: 318 declared (in frontmatter) · 318 [TODO markers in bodies
+
+SUMMARY
+  environment: ✓ runnable
+  recipes: 33/33 carry lifecycle frontmatter — all tracked
+  next: continue
+
+$ npm run verify
+conformance: 173 files (88 md · 36 py · 35 js · 10 json · 4 sh)
+✓ all conform (machine half of P4). Adequacy is still the human gate.
+WARN (3):
+  W1 ignore path not in .gitignore: archive/
+  W2 private path not gitignored (PII/secret risk): private/
+  W2 private path not gitignored (PII/secret risk): data/ats/
+✓ manifest check passed (3 warnings)
+
+$ node scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/sponsor-screen.mjs --today 2026-10-03
+sponsor-screen: 7 candidates → Apply 3 · Consider 1 · Skip 1 · unscored 2 (skip+unscored 43%)
+  unscored: not-in-csv × 2
+  greenhouse cross-check: 7 checked (status file 2026-10-03)
+  timeline gate: factor 1 [your-input] · earliest start 2027-03-01 · practical deadline 2027-05-20 · slack 80 days
+  course/2026fa/submissions/ethangomes14/runs/screen-sample/screen-log.json  +  course/2026fa/submissions/ethangomes14/runs/screen-sample/screen-report.md
+[exit 0]
+
+$ git status --short
+ M course/2026fa/submissions/ethangomes14/runs/screen-sample/screen-log.json
+ M course/2026fa/submissions/ethangomes14/runs/screen-sample/screen-report.md
+
+$ node --test scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/sponsor-screen.test.mjs
+ℹ tests 15
+ℹ pass 15
+ℹ fail 0
+
+$ node scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/sponsor-screen.mjs --out-dir data/examples   # refusal check
+STOP: --out-dir data/examples is outside this contribution's folders; refusing to write there
+Nothing was scored and no outputs were written.
+[exit 2]
+
+$ node scripts/conformance.mjs scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/ recipes/cases/2026fa/
+conformance: 15 files (3 md · 5 js · 7 json)
+✓ all conform (machine half of P4). Adequacy is still the human gate.
+
+$ node scripts/pii-scan.mjs --diff upstream/main
+pii-scan: clean ✓
+[exit 0]
+
+$ git diff --stat upstream/main...HEAD
+ .../submissions/ethangomes14/CHANGE-BRIEF.md       | 215 +++++
+ .../2026fa/submissions/ethangomes14/FRICTIONAL.md  | 193 +++++
+ .../submissions/ethangomes14/JUSTIFICATION.md      |  62 ++
+ course/2026fa/submissions/ethangomes14/README.md   |  46 +
+ course/2026fa/submissions/ethangomes14/SOURCES.md  |  79 ++
+ .../2026fa/submissions/ethangomes14/SUBMISSION.md  |  26 +
+ .../2026fa/submissions/ethangomes14/TEST-REPORT.md | 452 ++++++++++
+ .../2026fa/submissions/ethangomes14/WORKED-RUN.md  | 224 +++++
+ .../submissions/ethangomes14/runs/role-scores.json | 241 ++++++
+ .../submissions/ethangomes14/runs/role-scores.md   |  15 +
+ .../runs/screen-ghost/role-scores.json             |  66 ++
+ .../ethangomes14/runs/screen-ghost/role-scores.md  |  11 +
+ .../ethangomes14/runs/screen-ghost/roles.json      |  24 +
+ .../ethangomes14/runs/screen-ghost/screen-log.json | 308 +++++++
+ .../runs/screen-ghost/screen-report.md             |  74 ++
+ .../runs/screen-sample/role-scores.json            | 238 +++++
+ .../ethangomes14/runs/screen-sample/role-scores.md |  15 +
+ .../ethangomes14/runs/screen-sample/roles.json     | 112 +++
+ .../runs/screen-sample/screen-log.json             | 957 +++++++++++++++++++++
+ .../runs/screen-sample/screen-report.md            |  92 ++
+ logs/runs/2026fa-ethangomes14-1.md                 |  20 +
+ logs/runs/2026fa-ethangomes14-2.md                 |  25 +
+ logs/runs/2026fa-ethangomes14-3.md                 |  15 +
+ logs/runs/2026fa-ethangomes14-4.md                 |  13 +
+ logs/runs/2026fa-ethangomes14-5.md                 |  18 +
+ .../2026fa/ethangomes14-data-engineer-h1b.card.md  | 112 +++
+ .../cases/2026fa/ethangomes14-data-engineer-h1b.md | 265 ++++++
+ .../ethangomes14-data-engineer-h1b/README.md       | 101 +++
+ .../fetch-greenhouse-status.mjs                    |  82 ++
+ .../fixtures/BROKEN-apply-everything-scorer.mjs    |  16 +
+ .../fixtures/candidates-fixture.json               | 141 +++
+ .../fixtures/greenhouse-status-fixture.json        |  11 +
+ .../fixtures/liveness-fixture.txt                  |  19 +
+ .../fixtures/persona-electrifier.json              |  48 ++
+ .../fixtures/sponsors-fixture.csv                  |  10 +
+ .../2026fa/ethangomes14-data-engineer-h1b/lib.mjs  | 272 ++++++
+ .../ethangomes14-data-engineer-h1b/rules.json      |  53 ++
+ .../samples/candidates-2026-10-03.json             |  93 ++
+ .../samples/candidates-ghost-2026-10-03.json       |  14 +
+ .../samples/greenhouse-status-2026-10-03.json      | 101 +++
+ .../samples/liveness-2026-10-03.txt                |  19 +
+ .../samples/liveness-ghost-2026-10-03.txt          |  11 +
+ .../sponsor-screen.mjs                             | 476 ++++++++++
+ .../sponsor-screen.test.mjs                        | 236 +++++
+ 44 files changed, 5621 insertions(+)
+```
+
+**Reading it:**
+- doctor and verify pass, with the same 3 warnings as the baseline in §1.
+- The sample matches every earlier run. The only file changes after running are the regenerated output timestamps.
+- 15/15 tests pass, the out-dir refusal works, conformance passes, and the full-history PII scan is clean.
+- All 44 changed files are under `course/2026fa/submissions/ethangomes14/`, `logs/runs/2026fa-ethangomes14-*`, `recipes/cases/2026fa/ethangomes14-*` or `scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/`. No maintained file is patched, and `logs/RUN_LOG.md` is untouched.

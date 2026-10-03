@@ -1,4 +1,4 @@
-# Frictional log — Data Engineer H-1B sponsor triage
+# Frictional log — Data Engineer H-1B sponsor screen
 
 ## Executive summary
 
@@ -98,7 +98,7 @@
     ℹ fail 0
     ```
 
-  - On my first try I pasted both commands into the terminal at once, so the triage ran twice before the tests ran. Harmless (the second run just regenerates the same outputs), but a reminder to run one command at a time.
+  - On my first try I pasted both commands into the terminal at once, so the screen ran twice before the tests ran. Harmless (the second run just regenerates the same outputs), but a reminder to run one command at a time.
 - **Hand check against the source CSV.** At first I wasn't sure why I had to look at Sigma Computing in particular. It's the first Apply in the report, so it's the result most worth tracing back to the raw data myself. I read the row straight from the CSV with Python:
 
   ```
@@ -120,12 +120,12 @@
 - **Where I stopped it:** Claude started writing files before explaining the plan, so I stopped it and asked what it was about to do. It laid out every file it would touch, the one internet call it would add, and the side effect: changing the scripts voids my attestation until I re-run. Then I said go. One new file had already been created before I stopped it; Claude told me so.
 - **What I asked for on top:** a priority table at the top of the report, with every company and job ranked from highest to lowest priority.
 - **What happened:**
-  - The fake Airbnb job ID still comes back "active" from the liveness checker. The Greenhouse API says 404, and the triage now closes that posting as a dead link.
+  - The fake Airbnb job ID still comes back "active" from the liveness checker. The Greenhouse API says 404, and the screen now closes that posting as a dead link.
   - All 7 real postings returned 200, so my sample results didn't change.
   - Stripe is "uncertain" to the checker but 200 to the API. It stays Skip, because the new check only ever closes a gate. That's a case where I might decide differently myself.
 - **What broke:** one of the new tests was written wrong (it checked the wrong thing, not a code bug) and was rewritten. There are now 15 tests.
-- **Next:** re-run the triage and the 15 tests myself so the attestation covers v0.2.0.
-- **Evidence:** `TEST-REPORT.md` §11, `logs/runs/2026fa-ethangomes14-2.md`, `runs/triage-ghost/`.
+- **Next:** re-run the screen and the 15 tests myself so the attestation covers v0.2.0.
+- **Evidence:** `TEST-REPORT.md` §11, `logs/runs/2026fa-ethangomes14-2.md`, `runs/screen-ghost/`.
 
 ## 2026-10-03 — Removing the visa-timeline check (v0.3.0)
 
@@ -190,4 +190,5 @@
 - Next improvement I'd pick: a small, reviewed brand-name → legal-name table, so "Gemini" finds GEMINI SPACE STATION LLC without guesswork.
 - I re-ran `sponsor-screen.mjs` and the 13 tests for v0.3.1 on my laptop and got the same results (Apply 3 · Consider 1 · Skip 1 · unscored 2; 13/13). I pasted both commands at once again, out of habit; it didn't matter.
 - I considered expanding the sample to 20–30 jobs to fix the sponsor bias, but decided not to for now. The small, sponsor-biased sample stays a stated limitation.
-- My next step: re-run for v0.4.0, then commit, push the branch, open the PR and submit on Canvas.
+- I re-ran `sponsor-screen.mjs` and the 15 tests for v0.4.0: same results, with the timeline gate back (slack 80 days), 15/15. (Again I pasted both commands at once; harmless.)
+- My next step: commit and push, open the PR, and submit on Canvas.

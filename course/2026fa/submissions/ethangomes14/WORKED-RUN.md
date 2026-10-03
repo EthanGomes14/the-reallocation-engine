@@ -1,4 +1,4 @@
-# Worked Run — Data Engineer H-1B sponsor triage, 2026-10-03
+# Worked Run — Data Engineer H-1B sponsor screen, 2026-10-03
 
 ## Executive summary
 
@@ -11,7 +11,7 @@
 - A follow-up run with legal names showed one of those two was a strong sponsor whose posting deserved an Apply. That is the run's most important lesson.
 - The sample itself was biased toward sponsors, so it was not a fair test of how often the tool says Skip.
 
-> **Name note.** The program was renamed from `triage.mjs` to `sponsor-screen.mjs` in v0.3.1, after this run (outputs: `screen-log.json` / `screen-report.md` in `runs/screen-sample/`). The commands and output below show the **old name exactly as it was run**. A re-run under the new name with identical results is in `TEST-REPORT.md` §13.
+> **Name note.** The program was renamed from `triage.mjs` to `sponsor-screen.mjs` in v0.3.1, after this run (outputs: `screen-log.json` / `screen-report.md` in `runs/screen-sample/`). The commands and output below show the **old name exactly as it was run**. A run of the current version (v0.4.0) with identical results is pasted in §9 below.
 
 ---
 
@@ -56,7 +56,7 @@ Results: 6 active  0 expired  1 uncertain
 # ats:liveness exited non-zero (it exits 1 if any URL is expired or uncertain)
 ```
 
-### 2b. The triage, offline
+### 2b. The screen, offline
 
 ```
 $ node scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/triage.mjs --today 2026-10-03
@@ -67,13 +67,13 @@ triage: 7 candidates → Apply 3 · Consider 1 · Skip 1 · unscored 2 (skip+uns
 [exit 0]
 ```
 
-The scorer's own line, from `triage-log.json` → `scorer_stdout`:
+The scorer's own line, from `screen-log.json` → `scorer_stdout`:
 
 ```
 ✓ scored 5 roles → Apply 3 · Consider 1 · Skip 1 (skip 20%)
 ```
 
-### 2c. The results table, pasted from `runs/triage-sample/triage-report.md`
+### 2c. The results table, pasted from `runs/screen-sample/screen-report.md`
 
 | Posting | Result | Sponsorship evidence | Fit | Liveness | Next action |
 |---|---|---|---|---|---|
@@ -173,25 +173,98 @@ Ethan decided the tool should answer only two questions: *has this company spons
 
 After checking the recipe against the assignment's checklist, Ethan restored the visa-timeline gate (the assignment says "liveness and visa timeline are gates"). He also added two typed proposed additions to the recipe: the brand → legal-name alias table from the reflection above, and dated visa data. Sample results are unchanged. The "after the OPT deadline" check skips every scored posting again (`TEST-REPORT.md` §14).
 
+## 9. Current version run: `sponsor-screen.mjs` v0.4.0 (2026-10-03)
+
+The same scenario (persona, 7 postings, sponsor file) run with the current program. The sample run, tests and refusal check ran in a **fresh clone of the pushed branch from GitHub** (commit `7ac40ed`); the ghost and after-deadline runs ran in the working copy at the same version. Output is pasted as printed.
+
+**The sample:**
+
+```
+$ node scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/sponsor-screen.mjs --today 2026-10-03
+sponsor-screen: 7 candidates → Apply 3 · Consider 1 · Skip 1 · unscored 2 (skip+unscored 43%)
+  unscored: not-in-csv × 2
+  greenhouse cross-check: 7 checked (status file 2026-10-03)
+  timeline gate: factor 1 [your-input] · earliest start 2027-03-01 · practical deadline 2027-05-20 · slack 80 days
+  course/2026fa/submissions/ethangomes14/runs/screen-sample/screen-log.json  +  course/2026fa/submissions/ethangomes14/runs/screen-sample/screen-report.md
+[exit 0]
+```
+
+#### Priority list, pasted from `runs/screen-sample/screen-report.md`
+
+Order: **Apply now** → **Consider** → **Research first** (live posting, but no usable sponsorship record yet) → **Network, don't apply** (strong sponsor, posting closed) → **Skip** → **Out of scope**. Within a group, the higher score comes first.
+
+| # | Priority | Company | Job | Location | Score | Sponsorship record | Fit | Posting live? | What to do | Link |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | **Apply now** | Sigma Computing | Data Engineer | New York City, NY | 0.525 | Proven · 136 approvals | 0.7 | ✅ open · API 200 | Tailor an application (research-and-apply hours). | [open](https://job-boards.greenhouse.io/sigmacomputing/jobs/7809974003) |
+| 2 | **Apply now** | Klaviyo | Analytics Engineer | Boston, MA | 0.525 | Proven · 154 approvals | 0.7 | ✅ open · API 200 | Tailor an application (research-and-apply hours). | [open](https://www.klaviyo.com/careers/jobs/7737707003?gh_jid=7737707003) |
+| 3 | **Apply now** | Gusto | Senior Data Engineer | Denver, CO / New York, NY / San Francisco, CA (hybrid) | 0.465 | Proven · 218 approvals | 0.5 | ✅ open · API 200 | Tailor an application (research-and-apply hours). | [open](https://job-boards.greenhouse.io/gusto/jobs/8099751) |
+| 4 | **Consider** | Airbnb | Senior Staff Data Engineer, Foundational Data | United States | 0.230 | Possible · 1000 approvals | 0.3 | ✅ open · API 200 | Check the soft spot named in "why"; if it holds up, talk to someone at the company before applying (networking hours). | [open](https://careers.airbnb.com/positions/8224032?gh_jid=8224032) |
+| 5 | **Research first** | Gemini | Senior Data Engineer | New York, NY / Miami, FL / Remote (USA) | — | none found (not-in-csv) | 0.5 | ✅ open · API 200 | No sponsorship record found under this name. Check name variants by hand (legal vs brand name) before spending time. | [open](https://boards.greenhouse.io/embed/job_app?for=gemini&token=8076827&gh_jid=8076827) |
+| 6 | **Research first** | Robinhood | Senior Software Engineer, Data Engineering | Menlo Park, CA | — | none found (not-in-csv) | 0.5 | ✅ open · API 200 | No sponsorship record found under this name. Check name variants by hand (legal vs brand name) before spending time. | [open](https://boards.greenhouse.io/robinhood/jobs/4738660?t=gh_src=&gh_jid=4738660) |
+| 7 | **Skip** | Stripe | Software Engineer, Data Orchestration | not stated on the board listing | 0.000 | Possible · 1250 approvals | 0.7 | ❌ uncertain · API 200 | Skip. Time is better spent elsewhere. | [open](https://stripe.com/jobs/search?gh_jid=7230670) |
+
+**Tests:**
+
+```
+$ node --test scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/sponsor-screen.test.mjs
+ℹ tests 15
+ℹ pass 15
+ℹ fail 0
+```
+
+**Break attempts on the current version:**
+
+```
+$ node scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/sponsor-screen.mjs --today 2026-10-03 --candidates scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/samples/candidates-ghost-2026-10-03.json --liveness scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/samples/liveness-ghost-2026-10-03.txt --out-dir course/2026fa/submissions/ethangomes14/runs/screen-ghost
+sponsor-screen: 1 candidates → Apply 0 · Consider 0 · Skip 1 · unscored 0 (skip+unscored 100%)
+  greenhouse cross-check: 1 checked (status file 2026-10-03) · closed 1 redirected dead posting(s): airbnb-ghost-invented-id
+  timeline gate: factor 1 [your-input] · earliest start 2027-03-01 · practical deadline 2027-05-20 · slack 80 days
+  course/2026fa/submissions/ethangomes14/runs/screen-ghost/screen-log.json  +  course/2026fa/submissions/ethangomes14/runs/screen-ghost/screen-report.md
+[exit 0]
+
+$ node scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/sponsor-screen.mjs --today 2027-06-01 --out-dir /tmp/de-h1b-late   # after the OPT deadline
+sponsor-screen: 7 candidates → Apply 0 · Consider 0 · Skip 5 · unscored 2 (skip+unscored 100%)
+  unscored: not-in-csv × 2
+  greenhouse cross-check: 0 checked (status file 2026-10-03)
+  timeline gate: factor 0 [your-input] · earliest start 2027-07-16 · practical deadline 2027-05-20 · slack -57 days
+  /tmp/de-h1b-late/screen-log.json  +  /tmp/de-h1b-late/screen-report.md
+[exit 0]
+
+$ node scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/sponsor-screen.mjs --out-dir data/examples   # refusal check
+STOP: --out-dir data/examples is outside this contribution's folders; refusing to write there
+Nothing was scored and no outputs were written.
+[exit 2]
+```
+
+**Reading it:**
+- Results are identical to the v0.1.0 run in §2: Apply 3 · Consider 1 · Skip 1 · unscored 2.
+- **New in v0.4.0:**
+  - every live link is also confirmed by the Greenhouse API (all 7 return 200)
+  - the invented Airbnb job ID, which the liveness checker calls active, is now closed and skipped
+  - the report opens with the priority list
+- After the OPT deadline, every scored posting is Skip, so the timeline gate works.
+- In that after-deadline run the cross-check shows "0 checked", because the API file is older than 7 days relative to the pretend date, so it is ignored as stale. That is by design.
+
 ---
 
 ## Attestation
 
-- Recipe: ethangomes14-data-engineer-h1b v0.1.0, re-checked at v0.3.1; v0.4.0 pending re-check
+- Recipe: ethangomes14-data-engineer-h1b v0.1.0, re-checked at v0.3.1 and v0.4.0
 - By: Ethan Gomes (EthanGomes14) · 2026-10-03. Ethan did three things himself, shown in the first three rows below:
-  - re-ran the sample triage and the 12 tests on his own laptop, with identical results
+  - re-ran the sample screen and the 12 tests on his own laptop, with identical results
   - hand-checked the Sigma Computing row against the raw CSV
   - opened all six "active" job links (gate G2)
 
   The other rows were run by Claude (Claude Code) in the same session.
-- **Scope:** first signed for **v0.1.0**. The script changes in v0.2.0 (Greenhouse cross-check), v0.3.0 (timeline gate removed) and v0.3.1 (rename) void an attestation under `SNICKERDOODLE.md` until it is re-checked. **Re-checked at v0.3.1 on 2026-10-03:** Ethan ran `sponsor-screen.mjs` and the 13 tests on his own laptop, with identical results (row below). The CSV hand check and the six G2 links were done at v0.1.0; the sponsor data and the seven postings are unchanged since then. **v0.4.0** (timeline gate restored) changed the scripts again, so Ethan re-runs `sponsor-screen.mjs` and the 15 tests once more.
+- **Scope:** first signed for **v0.1.0**. The script changes in v0.2.0 (Greenhouse cross-check), v0.3.0 (timeline gate removed) and v0.3.1 (rename) void an attestation under `SNICKERDOODLE.md` until it is re-checked. **Re-checked at v0.3.1 on 2026-10-03:** Ethan ran `sponsor-screen.mjs` and the 13 tests on his own laptop, with identical results (row below). The CSV hand check and the six G2 links were done at v0.1.0; the sponsor data and the seven postings are unchanged since then. **Re-checked at v0.4.0 on 2026-10-03** (timeline gate restored): Ethan ran `sponsor-screen.mjs` and the 15 tests on his own laptop again, with identical results (row below). The attestation covers the current version.
 
 ### Tested
 
 | Ran | Saw | Expected |
 |---|---|---|
-| **Ethan, on his own laptop:** the sample triage, then `node --test …/triage.test.mjs` | 7 → Apply 3 · Consider 1 · Skip 1 · unscored 2; 12 pass, 0 fail | Same as the committed sample and the clean checkout |
+| **Ethan, on his own laptop:** the sample screen, then `node --test …/triage.test.mjs` | 7 → Apply 3 · Consider 1 · Skip 1 · unscored 2; 12 pass, 0 fail | Same as the committed sample and the clean checkout |
 | **Ethan, on his own laptop, v0.3.1:** `node …/sponsor-screen.mjs --today 2026-10-03`, then `node --test …/sponsor-screen.test.mjs` | 7 → Apply 3 · Consider 1 · Skip 1 · unscored 2; Greenhouse cross-check 7 checked; timeline "not evaluated"; 13 pass, 0 fail | Same results as every earlier version; all tests pass |
+| **Ethan, on his own laptop, v0.4.0:** `node …/sponsor-screen.mjs --today 2026-10-03`, then `node --test …/sponsor-screen.test.mjs` | 7 → Apply 3 · Consider 1 · Skip 1 · unscored 2; Greenhouse 7 checked; timeline gate factor 1, slack 80 days; 15 pass, 0 fail | Same results, timeline gate active again; all tests pass |
 | **Ethan, by hand:** read the `SIGMA COMPUTING INC` row straight from the CSV with Python | `136.0` approvals; titles include "Senior Analytics Engineer" and "Engineering Manager" | 136 approvals; the Analytics Engineer title counted, the Manager title excluded, as the report shows |
 | **Ethan, gate G2:** opened the six "active" links from the report (Sigma Computing, Klaviyo, Gusto, Gemini, Airbnb, Robinhood) | Each opened the listed job; no problems found | Each lands on that specific posting, not a general careers page |
 | `node scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/triage.mjs --today 2026-10-03` (clean checkout) | 7 → Apply 3 · Consider 1 · Skip 1 · unscored 2; exit 0; only `generated_at` differs from the committed outputs | Same results as the committed sample; nothing written outside own folders |
@@ -204,9 +277,9 @@ After checking the recipe against the assignment's checklist, Ethan restored the
 | **Break:** `--today 2027-06-01` (OPT deadline passed) | Timeline factor 0, slack −57 days, all 5 scored → Skip | Every scored role Skip |
 | What-if: Gemini/Robinhood retyped as legal names | Gemini → Apply 0.465 (Proven); Robinhood → Consider 0.29 | Confirms both `not-in-csv` rows were name misses, not non-sponsors |
 | **v0.2.0 (Claude):** `fetch-greenhouse-status.mjs` on the 7 sample links + the invented ID | 7 × `200 exists`, 1 × `404 gone` (airbnb/1) | Real postings exist; invented ID gone |
-| **v0.2.0 break (Claude):** triage on the invented Airbnb ID, which `ats:liveness` calls active | `closed 1 redirected dead posting(s)`; Skip | The cross-check closes the gate the checker left open |
-| **v0.2.0 (Claude):** triage on the sample + 15 tests | Apply 3 · Consider 1 · Skip 1 · unscored 2 (unchanged); 15 pass | Unchanged results; all tests pass |
-| **v0.3.0 (Claude):** triage on the sample + ghost + 13 tests, timeline gate removed | Same results; ghost still closed; timeline "not evaluated"; 13 pass | Unchanged results; no timeline section in the report |
+| **v0.2.0 break (Claude):** screen on the invented Airbnb ID, which `ats:liveness` calls active | `closed 1 redirected dead posting(s)`; Skip | The cross-check closes the gate the checker left open |
+| **v0.2.0 (Claude):** screen on the sample + 15 tests | Apply 3 · Consider 1 · Skip 1 · unscored 2 (unchanged); 15 pass | Unchanged results; all tests pass |
+| **v0.3.0 (Claude):** screen on the sample + ghost + 13 tests, timeline gate removed | Same results; ghost still closed; timeline "not evaluated"; 13 pass | Unchanged results; no timeline section in the report |
 
 ### Did not test
 

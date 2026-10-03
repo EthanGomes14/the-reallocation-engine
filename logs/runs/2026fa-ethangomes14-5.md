@@ -14,5 +14,5 @@
   - Ghost: Skip (API 404).
   - Post-deadline: Skip 5 · unscored 2 (slack −57).
   - Tests 15/15. Invariant violations 0.
-- **Gate decisions:** **v0.4.0 needs Ethan Gomes's re-run** of `sponsor-screen.mjs` and the 15 tests before the attestation covers it.
+- **Gate decisions:** Ethan Gomes re-ran `sponsor-screen.mjs` and the 15 tests on his own laptop on 2026-10-03, with identical results; the attestation in `WORKED-RUN.md` covers v0.4.0.
 - **Open issues:** the two recipe TODOs (alias table; dated visa data).
