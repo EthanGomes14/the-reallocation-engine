@@ -97,15 +97,18 @@ function realish(p) {
   return path.join(fs.realpathSync(cur), ...rest);
 }
 
+// Inside the repo: only this contribution's own folders. Outside the repo: only
+// a temp dir (for tests). Checked in that order, so a repo that itself lives
+// under /tmp (a clean-checkout test) still can't write to data/ or recipes/.
 function checkOutDir(dir) {
-  const allowed = [
-    HERE,
-    path.join(ROOT, 'course/2026fa/submissions/ethangomes14'),
-    os.tmpdir(),
-    '/tmp',
-  ].filter((a) => fs.existsSync(a)).map(realish);
+  const within = (p, base) => p === base || p.startsWith(base + path.sep);
   const real = realish(dir);
-  if (!allowed.some((a) => real === a || real.startsWith(a + path.sep))) {
+  const ownDirs = [HERE, path.join(ROOT, 'course/2026fa/submissions/ethangomes14')].map(realish);
+  const tmpDirs = [os.tmpdir(), '/tmp'].filter((a) => fs.existsSync(a)).map(realish);
+  const ok = within(real, realish(ROOT))
+    ? ownDirs.some((a) => within(real, a))
+    : tmpDirs.some((a) => within(real, a));
+  if (!ok) {
     stop(`--out-dir ${rel(real)} is outside this contribution's folders; refusing to write there`);
   }
 }
