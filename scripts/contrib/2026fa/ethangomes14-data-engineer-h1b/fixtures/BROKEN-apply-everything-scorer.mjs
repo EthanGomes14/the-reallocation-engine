@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // BROKEN-apply-everything-scorer.mjs — a deliberately WRONG scorer, used only
-// by triage.test.mjs as a break attempt (CONTRIBUTING.md: mutant scorers live
+// by sponsor-screen.test.mjs as a break attempt (CONTRIBUTING.md: mutant scorers live
 // in fixtures/ as BROKEN-*). It ignores the gates and says Apply to every role.
-// triage.mjs must refuse its output (exit 3, gate-invariant violation).
+// sponsor-screen.mjs must refuse its output (exit 3, gate-invariant violation).
 import fs from 'node:fs';
 import path from 'node:path';
 

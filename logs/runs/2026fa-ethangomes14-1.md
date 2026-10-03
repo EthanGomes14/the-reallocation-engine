@@ -6,10 +6,10 @@
 - **Outputs:** course/2026fa/submissions/ethangomes14/runs/triage-sample/triage-log.json · triage-report.md · roles.json · role-scores.json · role-scores.md
 - **Result:** 7 candidates → Apply 3 (Sigma Computing, Klaviyo, Gusto) · Consider 1 (Airbnb) · Skip 1 (Stripe, liveness uncertain) · unscored 2 (`not-in-csv`: Gemini, Robinhood). Invariant violations 0. Timeline factor 1 (earliest start 2027-03-01, deadline 2027-05-20, slack 80 days). Clean-checkout re-run identical except `generated_at`. Tests 12/12.
 - **Gate decisions:**
-  - G1: Claude checked the 5 matched CSV rows with an independent parser; all match. **Human confirmation of employer identity and title meaning pending (EthanGomes14).**
-  - G2: **not yet cleared.** The 6 "active" links have not been opened by a person.
-  - G3: persona inputs set by EthanGomes14 on 2026-10-03 (OPT 2027-03-01, 10-day buffer, 45-day lag).
-  - G4: report written; **human read pending.**
+  - G1: Claude checked the 5 matched CSV rows with an independent parser; all match. Ethan Gomes hand-checked the Sigma Computing row (136 approvals, "Senior Analytics Engineer").
+  - G2: cleared by Ethan Gomes on 2026-10-03. All 6 "active" links opened the listed job.
+  - G3: persona inputs set by Ethan Gomes on 2026-10-03 (OPT 2027-03-01, 10-day buffer, 45-day lag).
+  - G4: report read by Ethan Gomes; sample run and tests re-run on his laptop with identical results.
 - **Open issues:**
   - Brand vs. legal name misses (Gemini would be Proven/Apply under its legal name).
   - Sample biased toward sponsors, so the skip-rate prediction was not fairly tested.

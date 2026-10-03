@@ -1,0 +1,101 @@
+{
+  "_about": "Raw Greenhouse job-board API answers, saved by fetch-greenhouse-status.mjs. 200 = job exists, 404 = job gone, anything else = unknown (never treated as 200).",
+  "checked": "2026-10-03",
+  "source": "record",
+  "host": "boards-api.greenhouse.io",
+  "inputs": [
+    "scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/samples/candidates-2026-10-03.json",
+    "scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/samples/candidates-ghost-2026-10-03.json"
+  ],
+  "results": [
+    {
+      "url": "https://job-boards.greenhouse.io/sigmacomputing/jobs/7809974003",
+      "role_id": "sigma-data-engineer-nyc",
+      "board": "sigmacomputing",
+      "board_from": "url",
+      "job_id": "7809974003",
+      "api_url": "https://boards-api.greenhouse.io/v1/boards/sigmacomputing/jobs/7809974003",
+      "http_status": 200,
+      "verdict": "exists",
+      "error": null
+    },
+    {
+      "url": "https://www.klaviyo.com/careers/jobs/7737707003?gh_jid=7737707003",
+      "role_id": "klaviyo-analytics-engineer-boston",
+      "board": "klaviyo",
+      "board_from": "candidate greenhouse_board",
+      "job_id": "7737707003",
+      "api_url": "https://boards-api.greenhouse.io/v1/boards/klaviyo/jobs/7737707003",
+      "http_status": 200,
+      "verdict": "exists",
+      "error": null
+    },
+    {
+      "url": "https://job-boards.greenhouse.io/gusto/jobs/8099751",
+      "role_id": "gusto-senior-data-engineer",
+      "board": "gusto",
+      "board_from": "url",
+      "job_id": "8099751",
+      "api_url": "https://boards-api.greenhouse.io/v1/boards/gusto/jobs/8099751",
+      "http_status": 200,
+      "verdict": "exists",
+      "error": null
+    },
+    {
+      "url": "https://boards.greenhouse.io/embed/job_app?for=gemini&token=8076827&gh_jid=8076827",
+      "role_id": "gemini-senior-data-engineer",
+      "board": "gemini",
+      "board_from": "url",
+      "job_id": "8076827",
+      "api_url": "https://boards-api.greenhouse.io/v1/boards/gemini/jobs/8076827",
+      "http_status": 200,
+      "verdict": "exists",
+      "error": null
+    },
+    {
+      "url": "https://careers.airbnb.com/positions/8224032?gh_jid=8224032",
+      "role_id": "airbnb-senior-staff-data-engineer",
+      "board": "airbnb",
+      "board_from": "candidate greenhouse_board",
+      "job_id": "8224032",
+      "api_url": "https://boards-api.greenhouse.io/v1/boards/airbnb/jobs/8224032",
+      "http_status": 200,
+      "verdict": "exists",
+      "error": null
+    },
+    {
+      "url": "https://boards.greenhouse.io/robinhood/jobs/4738660?t=gh_src=&gh_jid=4738660",
+      "role_id": "robinhood-senior-swe-data-engineering",
+      "board": "robinhood",
+      "board_from": "url",
+      "job_id": "4738660",
+      "api_url": "https://boards-api.greenhouse.io/v1/boards/robinhood/jobs/4738660",
+      "http_status": 200,
+      "verdict": "exists",
+      "error": null
+    },
+    {
+      "url": "https://stripe.com/jobs/search?gh_jid=7230670",
+      "role_id": "stripe-swe-data-orchestration",
+      "board": "stripe",
+      "board_from": "candidate greenhouse_board",
+      "job_id": "7230670",
+      "api_url": "https://boards-api.greenhouse.io/v1/boards/stripe/jobs/7230670",
+      "http_status": 200,
+      "verdict": "exists",
+      "error": null
+    },
+    {
+      "url": "https://boards.greenhouse.io/airbnb/jobs/1",
+      "role_id": "airbnb-ghost-invented-id",
+      "board": "airbnb",
+      "board_from": "url",
+      "job_id": "1",
+      "api_url": "https://boards-api.greenhouse.io/v1/boards/airbnb/jobs/1",
+      "http_status": 404,
+      "verdict": "gone",
+      "error": null
+    }
+  ],
+  "skipped": []
+}

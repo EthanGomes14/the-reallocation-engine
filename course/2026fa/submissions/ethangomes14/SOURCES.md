@@ -46,7 +46,7 @@ No other students' work and no human collaborators were used.
 - Rated the fit of the 7 sample postings (labelled `model-judgment`).
 - Proposed the title family, exclusions and tier rule.
 - Ran every command whose output is pasted in `TEST-REPORT.md` and `WORKED-RUN.md`, including the clean-checkout run, and fixed the three bugs it found.
-- Set a repo-local GitHub noreply commit identity to keep a personal email out of public history.
+- Built the v0.2.0 Greenhouse liveness cross-check at my request (`fetch-greenhouse-status.mjs`, the API check in gate G2, 3 new tests) and the priority list at the top of the report, which I asked for.
 
 ## What I decided, checked, changed or rejected
 
@@ -56,14 +56,24 @@ No other students' work and no human collaborators were used.
   - to use a fictional persona with none of my personal details
   - to widen the target to every title doing Data Engineer work
   - to keep the tier rule
+  - to list the brand → legal-name alias table and dated visa data as the recipe's two proposed additions
   - to have Claude rate fit
   - to label the sponsorship score `model-judgment`
-  - to set a 90-day limit with a 10-day buffer
-- **Confirmed:** the failure cases and predictions before they were frozen (commit `35c1bcb`).
+  - to set a 90-day limit with a 10-day buffer (later, in v0.3.0, to remove the visa-timeline gate against Claude's advice, then in v0.4.0 to restore it after checking the recipe against the assignment)
+- **Confirmed:** the failure cases and predictions before they were frozen (commit `ab51f69`).
 - **Corrected by Claude, accepted by me:** "80 days" vs. the 90-day regulation.
-- **Changed by Claude against my wording:** fit is role-only, not role plus sponsorship tier (to avoid double-counting). ✍️ my verdict:
+- **Changed by Claude against my wording, then accepted by me:** I originally asked for fit to use both the sponsorship tier and the job role. Claude made it role-only because sponsorship already has its own vote in the scorer, and counting it again inside fit would double-count the same evidence. I kept the role-only version.
 - **Rejected:** Claude's multiple-choice question form, in favour of giving the information myself.
-- ✍️ **Checked myself:** (list what you re-ran, read or looked up by hand)
-- ✍️ **Still don't fully understand:**
+- **Checked myself so far:**
+  - read the change brief in my editor before confirming the failure cases and predictions
+  - asked Claude to explain each git command (`remote add upstream`, renaming a branch) before letting it run
+  - opened the sample run's JSON log and the worked run to see the actual output
+  - confirmed which GitHub account and remote would be used before allowing any push
+  - re-ran the screen and the tests on my own laptop twice: at v0.1.0 (12 tests) and again at v0.3.1 after the changes and the rename (13 tests), with the same results both times: same results (Apply 3 · Consider 1 · Skip 1 · unscored 2; 12/12 pass)
+  - hand-checked the top Apply result against the raw CSV: `SIGMA COMPUTING INC` shows 136.0 approvals and "Senior Analytics Engineer" among its titles, matching the report
+  - opened all six "active" job links from the report (gate G2); each opened the listed job
+- **Still open for me:**
+  - whether the code behaves the same on Node 20, which CI uses
+  - where the scorer's own weights (0.35 sponsorship, 0.30 fit) and the 0.30 Apply threshold come from (they are the repo's, from the book's Chapter 11, not mine)
 
 I am responsible for everything submitted here and can be asked to explain any gate, number or line.

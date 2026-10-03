@@ -1,0 +1,14 @@
+{
+  "_about": "Break-attempt input, not a real candidate. The job ID 1 on Airbnb's Greenhouse board was INVENTED on 2026-10-03 to test whether the liveness gate catches a dead posting that redirects to a general careers page. Fit is a placeholder so the row passes input checks.",
+  "found_on": "2026-10-03",
+  "candidates": [
+    {
+      "role_id": "airbnb-ghost-invented-id",
+      "company": "Airbnb",
+      "title": "Data Engineer (invented job ID, break attempt)",
+      "location": "n/a",
+      "url": "https://boards.greenhouse.io/airbnb/jobs/1",
+      "fit": { "p": 0.7, "rated_by": "placeholder", "reason": "Placeholder value for a break test; not a real rating." }
+    }
+  ]
+}

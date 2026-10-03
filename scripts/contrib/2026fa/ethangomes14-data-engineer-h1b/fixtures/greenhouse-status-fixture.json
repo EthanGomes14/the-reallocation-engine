@@ -1,0 +1,11 @@
+{
+  "_about": "Test fixture shaped like fetch-greenhouse-status.mjs output. Invented board and job IDs; no network.",
+  "checked": "2026-10-01",
+  "source": "record",
+  "host": "boards-api.greenhouse.io",
+  "results": [
+    { "url": "https://job-boards.greenhouse.io/acmedata/jobs/999", "role_id": "acme-zombie-de", "board": "acmedata", "board_from": "url", "job_id": "999", "http_status": 404, "verdict": "gone", "error": null },
+    { "url": "https://jobs.example.com/ghosthire/1", "role_id": "ghosthire-de", "board": "ghosthire", "board_from": "candidate greenhouse_board", "job_id": "1", "http_status": 200, "verdict": "exists", "error": null }
+  ],
+  "skipped": []
+}

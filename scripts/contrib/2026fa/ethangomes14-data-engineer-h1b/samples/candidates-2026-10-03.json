@@ -1,5 +1,5 @@
 {
-  "_about": "Sample candidate list for persona 'Electrifier' (fictional). Seven REAL public postings found on 2026-10-03 via the public Greenhouse job-board API (boards-api.greenhouse.io/v1/boards/<board>/jobs), filtered to Data Engineer-family titles. Company names are written the way a job-seeker would type them (brand names), not copied from the sponsor CSV. Fit ratings are model-judgment by Claude, made from the posting's title, seniority and location ONLY - job descriptions were not read.",
+  "_about": "Sample candidate list for persona 'Electrifier' (fictional). Seven REAL public postings found on 2026-10-03 via the public Greenhouse job-board API (boards-api.greenhouse.io/v1/boards/<board>/jobs), filtered to Data Engineer-family titles. Company names are written the way a job-seeker would type them (brand names), not copied from the sponsor CSV. Fit ratings are model-judgment by Claude, made from the posting's title, seniority and location ONLY - job descriptions were not read. 'greenhouse_board' is set only for company-hosted links whose URL carries a Greenhouse job ID (gh_jid) but no board name; it is the board token used in the public API query on 2026-10-03.",
   "found_on": "2026-10-03",
   "candidates": [
     {
@@ -8,7 +8,11 @@
       "title": "Data Engineer",
       "location": "New York City, NY",
       "url": "https://job-boards.greenhouse.io/sigmacomputing/jobs/7809974003",
-      "fit": { "p": 0.7, "rated_by": "Claude", "reason": "Exact target title with no seniority marker; US location. Stack not checked (description not read)." }
+      "fit": {
+        "p": 0.7,
+        "rated_by": "Claude",
+        "reason": "Exact target title with no seniority marker; US location. Stack not checked (description not read)."
+      }
     },
     {
       "role_id": "klaviyo-analytics-engineer-boston",
@@ -16,7 +20,12 @@
       "title": "Analytics Engineer",
       "location": "Boston, MA",
       "url": "https://www.klaviyo.com/careers/jobs/7737707003?gh_jid=7737707003",
-      "fit": { "p": 0.7, "rated_by": "Claude", "reason": "Data Engineer-family title (SQL/dbt modelling side, matching persona skills); no seniority marker; US location." }
+      "greenhouse_board": "klaviyo",
+      "fit": {
+        "p": 0.7,
+        "rated_by": "Claude",
+        "reason": "Data Engineer-family title (SQL/dbt modelling side, matching persona skills); no seniority marker; US location."
+      }
     },
     {
       "role_id": "gusto-senior-data-engineer",
@@ -24,7 +33,11 @@
       "title": "Senior Data Engineer",
       "location": "Denver, CO / New York, NY / San Francisco, CA (hybrid)",
       "url": "https://job-boards.greenhouse.io/gusto/jobs/8099751",
-      "fit": { "p": 0.5, "rated_by": "Claude", "reason": "Right work, but 'Senior' is about one level above a new grad: a stretch." }
+      "fit": {
+        "p": 0.5,
+        "rated_by": "Claude",
+        "reason": "Right work, but 'Senior' is about one level above a new grad: a stretch."
+      }
     },
     {
       "role_id": "gemini-senior-data-engineer",
@@ -32,7 +45,11 @@
       "title": "Senior Data Engineer",
       "location": "New York, NY / Miami, FL / Remote (USA)",
       "url": "https://boards.greenhouse.io/embed/job_app?for=gemini&token=8076827&gh_jid=8076827",
-      "fit": { "p": 0.5, "rated_by": "Claude", "reason": "Right work, one level too senior; remote-in-US option helps a relocating candidate." }
+      "fit": {
+        "p": 0.5,
+        "rated_by": "Claude",
+        "reason": "Right work, one level too senior; remote-in-US option helps a relocating candidate."
+      }
     },
     {
       "role_id": "airbnb-senior-staff-data-engineer",
@@ -40,7 +57,12 @@
       "title": "Senior Staff Data Engineer, Foundational Data",
       "location": "United States",
       "url": "https://careers.airbnb.com/positions/8224032?gh_jid=8224032",
-      "fit": { "p": 0.3, "rated_by": "Claude", "reason": "Senior Staff is several levels above new-grad; poor fit despite the right domain." }
+      "greenhouse_board": "airbnb",
+      "fit": {
+        "p": 0.3,
+        "rated_by": "Claude",
+        "reason": "Senior Staff is several levels above new-grad; poor fit despite the right domain."
+      }
     },
     {
       "role_id": "robinhood-senior-swe-data-engineering",
@@ -48,7 +70,11 @@
       "title": "Senior Software Engineer, Data Engineering",
       "location": "Menlo Park, CA",
       "url": "https://boards.greenhouse.io/robinhood/jobs/4738660?t=gh_src=&gh_jid=4738660",
-      "fit": { "p": 0.5, "rated_by": "Claude", "reason": "Data engineering work at senior level: a stretch for a new grad." }
+      "fit": {
+        "p": 0.5,
+        "rated_by": "Claude",
+        "reason": "Data engineering work at senior level: a stretch for a new grad."
+      }
     },
     {
       "role_id": "stripe-swe-data-orchestration",
@@ -56,7 +82,12 @@
       "title": "Software Engineer, Data Orchestration",
       "location": "not stated on the board listing",
       "url": "https://stripe.com/jobs/search?gh_jid=7230670",
-      "fit": { "p": 0.7, "rated_by": "Claude", "reason": "Orchestration work lines up with the persona's Airflow skill; no seniority marker; location unknown." }
+      "greenhouse_board": "stripe",
+      "fit": {
+        "p": 0.7,
+        "rated_by": "Claude",
+        "reason": "Orchestration work lines up with the persona's Airflow skill; no seniority marker; location unknown."
+      }
     }
   ]
 }

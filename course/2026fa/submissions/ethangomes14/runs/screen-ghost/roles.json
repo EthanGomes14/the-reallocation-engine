@@ -1,0 +1,24 @@
+[
+  {
+    "role_id": "airbnb-ghost-invented-id",
+    "company": "Airbnb",
+    "title": "Data Engineer (invented job ID, break attempt)",
+    "sponsorship": {
+      "p": 0.4,
+      "tier": "Possible",
+      "source": "model-judgment"
+    },
+    "fit": {
+      "p": 0.7,
+      "source": "model-judgment"
+    },
+    "liveness": {
+      "factor": 0,
+      "source": "record"
+    },
+    "timeline": {
+      "factor": 1,
+      "source": "your-input"
+    }
+  }
+]

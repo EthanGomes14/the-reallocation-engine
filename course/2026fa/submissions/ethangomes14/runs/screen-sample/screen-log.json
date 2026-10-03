@@ -1,15 +1,15 @@
 {
   "workflow": "ethangomes14-data-engineer-h1b",
   "recipe": "recipes/cases/2026fa/ethangomes14-data-engineer-h1b.md",
-  "recipe_version": "0.1.0",
+  "recipe_version": "0.4.0",
   "mode": "sample",
   "status": "complete",
-  "generated_at": "2026-10-03T20:03:21.833Z",
+  "generated_at": "2026-10-03T22:53:59.128Z",
   "today": "2026-10-03",
   "inputs": {
     "candidates": {
       "path": "scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/samples/candidates-2026-10-03.json",
-      "sha256": "f3a5ce86a10ca5c2134a854a201c839f448c51f60a336861ab7d509c7c3664c9"
+      "sha256": "4fdb34405d0ff9e86e56e8548bcf3fc831ea956eb7f44f932c6bc6105a857f00"
     },
     "liveness_log": {
       "path": "scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/samples/liveness-2026-10-03.txt",
@@ -24,6 +24,11 @@
       "path": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv",
       "sha256": "eccdee2addf472b1639269f42eec693b083b7ce251347d5fd0b2856cfdae6270",
       "rows": 30369
+    },
+    "greenhouse_status": {
+      "path": "scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/samples/greenhouse-status-2026-10-03.json",
+      "sha256": "805cc676011d39c3c0adb432d36ce7ddcc8a23c4cdacfd47dd00240a005ea8b9",
+      "checked": "2026-10-03"
     },
     "rules": {
       "path": "scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/rules.json"
@@ -65,6 +70,7 @@
       "role_id": "sigma-data-engineer-nyc",
       "company": "Sigma Computing",
       "title": "Data Engineer",
+      "location": "New York City, NY",
       "url": "https://job-boards.greenhouse.io/sigmacomputing/jobs/7809974003",
       "gates": {
         "G0_input": {
@@ -80,7 +86,16 @@
             "age_days": 0,
             "stale": false
           },
-          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)"
+          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)",
+          "cross_check": {
+            "status": "checked",
+            "http_status": 200,
+            "verdict": "exists",
+            "checked_on": "2026-10-03",
+            "board": "sigmacomputing",
+            "job_id": "7809974003",
+            "source": "record"
+          }
         },
         "G1_company_match": {
           "pass": true,
@@ -192,6 +207,7 @@
       "role_id": "klaviyo-analytics-engineer-boston",
       "company": "Klaviyo",
       "title": "Analytics Engineer",
+      "location": "Boston, MA",
       "url": "https://www.klaviyo.com/careers/jobs/7737707003?gh_jid=7737707003",
       "gates": {
         "G0_input": {
@@ -207,7 +223,16 @@
             "age_days": 0,
             "stale": false
           },
-          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)"
+          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)",
+          "cross_check": {
+            "status": "checked",
+            "http_status": 200,
+            "verdict": "exists",
+            "checked_on": "2026-10-03",
+            "board": "klaviyo",
+            "job_id": "7737707003",
+            "source": "record"
+          }
         },
         "G1_company_match": {
           "pass": true,
@@ -320,6 +345,7 @@
       "role_id": "gusto-senior-data-engineer",
       "company": "Gusto",
       "title": "Senior Data Engineer",
+      "location": "Denver, CO / New York, NY / San Francisco, CA (hybrid)",
       "url": "https://job-boards.greenhouse.io/gusto/jobs/8099751",
       "gates": {
         "G0_input": {
@@ -335,7 +361,16 @@
             "age_days": 0,
             "stale": false
           },
-          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)"
+          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)",
+          "cross_check": {
+            "status": "checked",
+            "http_status": 200,
+            "verdict": "exists",
+            "checked_on": "2026-10-03",
+            "board": "gusto",
+            "job_id": "8099751",
+            "source": "record"
+          }
         },
         "G1_company_match": {
           "pass": true,
@@ -448,6 +483,7 @@
       "role_id": "gemini-senior-data-engineer",
       "company": "Gemini",
       "title": "Senior Data Engineer",
+      "location": "New York, NY / Miami, FL / Remote (USA)",
       "url": "https://boards.greenhouse.io/embed/job_app?for=gemini&token=8076827&gh_jid=8076827",
       "gates": {
         "G0_input": {
@@ -463,7 +499,16 @@
             "age_days": 0,
             "stale": false
           },
-          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)"
+          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)",
+          "cross_check": {
+            "status": "checked",
+            "http_status": 200,
+            "verdict": "exists",
+            "checked_on": "2026-10-03",
+            "board": "gemini",
+            "job_id": "8076827",
+            "source": "record"
+          }
         },
         "G1_company_match": {
           "pass": false,
@@ -488,6 +533,7 @@
       "role_id": "airbnb-senior-staff-data-engineer",
       "company": "Airbnb",
       "title": "Senior Staff Data Engineer, Foundational Data",
+      "location": "United States",
       "url": "https://careers.airbnb.com/positions/8224032?gh_jid=8224032",
       "gates": {
         "G0_input": {
@@ -503,7 +549,16 @@
             "age_days": 0,
             "stale": false
           },
-          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)"
+          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)",
+          "cross_check": {
+            "status": "checked",
+            "http_status": 200,
+            "verdict": "exists",
+            "checked_on": "2026-10-03",
+            "board": "airbnb",
+            "job_id": "8224032",
+            "source": "record"
+          }
         },
         "G1_company_match": {
           "pass": true,
@@ -614,6 +669,7 @@
       "role_id": "robinhood-senior-swe-data-engineering",
       "company": "Robinhood",
       "title": "Senior Software Engineer, Data Engineering",
+      "location": "Menlo Park, CA",
       "url": "https://boards.greenhouse.io/robinhood/jobs/4738660?t=gh_src=&gh_jid=4738660",
       "gates": {
         "G0_input": {
@@ -629,7 +685,16 @@
             "age_days": 0,
             "stale": false
           },
-          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)"
+          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)",
+          "cross_check": {
+            "status": "checked",
+            "http_status": 200,
+            "verdict": "exists",
+            "checked_on": "2026-10-03",
+            "board": "robinhood",
+            "job_id": "4738660",
+            "source": "record"
+          }
         },
         "G1_company_match": {
           "pass": false,
@@ -654,6 +719,7 @@
       "role_id": "stripe-swe-data-orchestration",
       "company": "Stripe",
       "title": "Software Engineer, Data Orchestration",
+      "location": "not stated on the board listing",
       "url": "https://stripe.com/jobs/search?gh_jid=7230670",
       "gates": {
         "G0_input": {
@@ -669,7 +735,16 @@
             "age_days": 0,
             "stale": false
           },
-          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)"
+          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)",
+          "cross_check": {
+            "status": "checked",
+            "http_status": 200,
+            "verdict": "exists",
+            "checked_on": "2026-10-03",
+            "board": "stripe",
+            "job_id": "7230670",
+            "source": "record"
+          }
         },
         "G1_company_match": {
           "pass": true,
@@ -872,11 +947,11 @@
     "G4: read the Markdown report before acting on any Apply"
   ],
   "outputs": {
-    "log": "course/2026fa/submissions/ethangomes14/runs/triage-sample/triage-log.json",
-    "report": "course/2026fa/submissions/ethangomes14/runs/triage-sample/triage-report.md",
-    "roles_json": "course/2026fa/submissions/ethangomes14/runs/triage-sample/roles.json",
-    "scorer_json": "course/2026fa/submissions/ethangomes14/runs/triage-sample/role-scores.json",
-    "scorer_md": "course/2026fa/submissions/ethangomes14/runs/triage-sample/role-scores.md"
+    "log": "course/2026fa/submissions/ethangomes14/runs/screen-sample/screen-log.json",
+    "report": "course/2026fa/submissions/ethangomes14/runs/screen-sample/screen-report.md",
+    "roles_json": "course/2026fa/submissions/ethangomes14/runs/screen-sample/roles.json",
+    "scorer_json": "course/2026fa/submissions/ethangomes14/runs/screen-sample/role-scores.json",
+    "scorer_md": "course/2026fa/submissions/ethangomes14/runs/screen-sample/role-scores.md"
   },
-  "scorer_stdout": "✓ scored 5 roles → Apply 3 · Consider 1 · Skip 1 (skip 20%)\n  course/2026fa/submissions/ethangomes14/runs/triage-sample/role-scores.json  +  course/2026fa/submissions/ethangomes14/runs/triage-sample/role-scores.md"
+  "scorer_stdout": "✓ scored 5 roles → Apply 3 · Consider 1 · Skip 1 (skip 20%)\n  course/2026fa/submissions/ethangomes14/runs/screen-sample/role-scores.json  +  course/2026fa/submissions/ethangomes14/runs/screen-sample/role-scores.md"
 }

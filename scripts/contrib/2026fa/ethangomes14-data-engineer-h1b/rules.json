@@ -1,5 +1,5 @@
 {
-  "_about": "Decision rules for the data-engineer-h1b triage prototype. Every value here is a chosen rule, not a record. Provenance per block in _source. Changing a value here changes outcomes: log the change in CHANGE-BRIEF.md's revisions.",
+  "_about": "Decision rules for the data-engineer-h1b sponsor-screen prototype. Every value here is a chosen rule, not a record. Provenance per block in _source. Changing a value here changes outcomes: log the change in CHANGE-BRIEF.md's revisions.",
   "family_patterns": {
     "_source": "model-judgment (title family proposed by Claude, accepted by the author 2026-10-03)",
     "value": [

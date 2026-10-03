@@ -1,0 +1,11 @@
+# checked: 2026-10-03
+# command: npm run ats:liveness -- https://boards.greenhouse.io/airbnb/jobs/1   (invented job ID, break attempt)
+
+> the-reallocation-engine@1.0.0 ats:liveness
+> node scripts/ats/check-liveness.mjs https://boards.greenhouse.io/airbnb/jobs/1
+
+Checking 1 URL(s)...
+
+✅ active     https://boards.greenhouse.io/airbnb/jobs/1
+
+Results: 1 active  0 expired  0 uncertain

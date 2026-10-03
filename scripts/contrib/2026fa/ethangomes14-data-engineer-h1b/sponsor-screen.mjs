@@ -1,26 +1,31 @@
 #!/usr/bin/env node
-// triage.mjs — Data Engineer H-1B sponsor triage (recipe:
+// sponsor-screen.mjs — Data Engineer H-1B sponsor screen (recipe:
 // recipes/cases/2026fa/ethangomes14-data-engineer-h1b.md).
 //
 // For each candidate posting: check the input row (G0), match the company to
 // the 80 Days to Stay sponsor CSV and grade its Data Engineer-family
 // sponsorship evidence (G1), read the posting's liveness from saved
-// `npm run ats:liveness` output (G2), compute the OPT timeline gate from the
-// persona (G3), then hand the evidence to the EXISTING scorer
-// (scripts/score/role-scorer.mjs) — never a copy of it. Writes a JSON log for
-// the agent and a Markdown report for the person (G4 is the person reading it).
+// `npm run ats:liveness` output plus the Greenhouse API cross-check (G2),
+// compute the OPT timeline gate from the persona (G3), then hand the evidence
+// to the EXISTING scorer (scripts/score/role-scorer.mjs) — never a copy of it.
+// Writes a JSON log for the agent and a Markdown report for the person (G4 is
+// the person reading it). The timeline gate was removed in v0.3.0 and
+// restored in v0.4.0.
 //
 // Offline: reads local files only, makes no network calls, calls no AI service.
 //
-//   node scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/triage.mjs [options]
+//   node scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/sponsor-screen.mjs [options]
 //     --candidates <json>   candidate postings      (default: samples/candidates-2026-10-03.json)
 //     --liveness <txt>      saved ats:liveness output (default: samples/liveness-2026-10-03.txt)
 //     --persona <json>      persona                 (default: fixtures/persona-electrifier.json)
 //     --csv <csv>           sponsor CSV             (default: the 80 Days to Stay CSV)
 //     --rules <json>        decision rules          (default: rules.json)
-//     --out-dir <dir>       output folder           (default: course/2026fa/submissions/ethangomes14/runs/triage-sample)
+//     --out-dir <dir>       output folder           (default: course/2026fa/submissions/ethangomes14/runs/screen-sample)
 //     --today <YYYY-MM-DD>  evaluation date         (default: today's local date)
 //     --scorer <mjs>        scorer to call          (default: scripts/score/role-scorer.mjs; tests pass a BROKEN-* mutant)
+//     --greenhouse-status <json>  saved output of fetch-greenhouse-status.mjs
+//                           (default: samples/greenhouse-status-2026-10-03.json; if the default
+//                           file is absent the cross-check is reported as not run, never assumed)
 //
 // Exit codes: 0 = run complete · 2 = stopped on bad input (nothing scored) ·
 //             3 = scorer output failed the gate-invariant check.
@@ -34,7 +39,7 @@ import { fileURLToPath } from 'node:url';
 import {
   SRC, parseCsv, normalizeName, buildCompanyIndex, compileFamily, isFamilyTitle,
   sponsorshipEvidence, parseDate, timelineFactor, parseLivenessLog, livenessFactor,
-  validateCandidate,
+  validateCandidate, parseGreenhouseStatus, applyGreenhouseCheck,
 } from './lib.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -48,8 +53,9 @@ const DEFAULTS = {
   persona: path.join(HERE, 'fixtures/persona-electrifier.json'),
   csv: path.join(ROOT, 'data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv'),
   rules: path.join(HERE, 'rules.json'),
-  'out-dir': path.join(ROOT, 'course/2026fa/submissions/ethangomes14/runs/triage-sample'),
+  'out-dir': path.join(ROOT, 'course/2026fa/submissions/ethangomes14/runs/screen-sample'),
   scorer: path.join(ROOT, 'scripts/score/role-scorer.mjs'),
+  'greenhouse-status': path.join(HERE, 'samples/greenhouse-status-2026-10-03.json'),
 };
 
 function stop(msg) {
@@ -59,6 +65,7 @@ function stop(msg) {
 
 function parseArgs(argv) {
   const opts = { ...DEFAULTS, today: null };
+  const explicit = new Set();
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (!a.startsWith('--')) stop(`unexpected argument "${a}"`);
@@ -67,8 +74,9 @@ function parseArgs(argv) {
     const v = argv[++i];
     if (v == null) stop(`${a} needs a value`);
     opts[key] = key === 'today' ? v : path.resolve(v);
+    explicit.add(key);
   }
-  return opts;
+  return { opts, explicit };
 }
 
 function localToday() {
@@ -141,7 +149,7 @@ const UNSCORED_NEXT = {
 };
 
 function main() {
-  const opts = parseArgs(process.argv.slice(2));
+  const { opts, explicit } = parseArgs(process.argv.slice(2));
   const todayStr = opts.today || localToday();
   const today = parseDate(todayStr);
   if (!today) stop(`--today must be YYYY-MM-DD, got "${todayStr}"`);
@@ -172,10 +180,20 @@ function main() {
   const liveText = readText(opts.liveness, 'liveness log');
   const live = parseLivenessLog(liveText);
 
+  // Greenhouse cross-check: an explicitly named file must exist; the default
+  // file may be absent, in which case the check is reported as not run.
+  const ghPath = opts['greenhouse-status'];
+  let ghText = null;
+  let gh = null;
+  if (fs.existsSync(ghPath)) {
+    ghText = fs.readFileSync(ghPath, 'utf8');
+    try { gh = parseGreenhouseStatus(JSON.parse(ghText)); } catch (e) { stop(`Greenhouse status file is not valid JSON (${rel(ghPath)}): ${e.message}`); }
+  } else if (explicit.has('greenhouse-status')) stop(`Greenhouse status file not found: ${rel(ghPath)}`);
+
   // ── per-candidate gates ──
   const results = [];
   for (const c of candidates) {
-    const r = { role_id: c?.role_id ?? null, company: c?.company ?? null, title: c?.title ?? null, url: c?.url ?? null, gates: {}, status: 'scoreable' };
+    const r = { role_id: c?.role_id ?? null, company: c?.company ?? null, title: c?.title ?? null, location: c?.location ?? null, url: c?.url ?? null, gates: {}, status: 'scoreable' };
     results.push(r);
 
     const problems = validateCandidate(c);
@@ -185,8 +203,9 @@ function main() {
     r.fit = { p: c.fit.p, source: SRC.model, reason: c.fit.reason };
     r.posting_title_in_family = { value: isFamilyTitle(c.title, family), source: SRC.model };
 
-    // G2 liveness is read first so that unscored rows still show it
-    const lv = livenessFactor(c.url, live, today, rules);
+    // G2 liveness is read first so that unscored rows still show it.
+    // The Greenhouse cross-check can only close the gate (API 404), never open it.
+    const lv = applyGreenhouseCheck(livenessFactor(c.url, live, today, rules), c.url, gh, today, rules);
     r.gates.G2_liveness = lv;
 
     // G1 company match + sponsorship evidence
@@ -284,7 +303,7 @@ function main() {
   const log = {
     workflow: 'ethangomes14-data-engineer-h1b',
     recipe: 'recipes/cases/2026fa/ethangomes14-data-engineer-h1b.md',
-    recipe_version: '0.1.0',
+    recipe_version: '0.4.0',
     mode: 'sample',
     status: violations.length ? 'FAILED-gate-invariant' : 'complete',
     generated_at: new Date().toISOString(),
@@ -294,6 +313,7 @@ function main() {
       liveness_log: { path: rel(opts.liveness), sha256: sha256(liveText), checked: live.checked },
       persona: { path: rel(opts.persona), id: persona.persona_id ?? null },
       sponsor_csv: { path: rel(opts.csv), sha256: sha256(csvText), rows: csvRows.length },
+      greenhouse_status: gh ? { path: rel(ghPath), sha256: sha256(ghText), checked: gh.checked } : { path: rel(ghPath), status: 'not-run (file absent)' },
       rules: { path: rel(opts.rules) },
       scorer: { path: rel(opts.scorer) },
     },
@@ -310,19 +330,22 @@ function main() {
       'G4: read the Markdown report before acting on any Apply',
     ],
     outputs: {
-      log: rel(path.join(opts['out-dir'], 'triage-log.json')),
-      report: rel(path.join(opts['out-dir'], 'triage-report.md')),
+      log: rel(path.join(opts['out-dir'], 'screen-log.json')),
+      report: rel(path.join(opts['out-dir'], 'screen-report.md')),
       roles_json: rel(rolesPath),
       scorer_json: roles.length ? rel(path.join(opts['out-dir'], 'role-scores.json')) : null,
       scorer_md: roles.length ? rel(path.join(opts['out-dir'], 'role-scores.md')) : null,
     },
     scorer_stdout: scorerStdout.trim(),
   };
-  fs.writeFileSync(path.join(opts['out-dir'], 'triage-log.json'), JSON.stringify(log, null, 2) + '\n');
-  fs.writeFileSync(path.join(opts['out-dir'], 'triage-report.md'), renderReport(log, persona));
+  fs.writeFileSync(path.join(opts['out-dir'], 'screen-log.json'), JSON.stringify(log, null, 2) + '\n');
+  fs.writeFileSync(path.join(opts['out-dir'], 'screen-report.md'), renderReport(log, persona));
 
-  console.log(`triage: ${counts.candidates} candidates → Apply ${counts.apply} · Consider ${counts.consider} · Skip ${counts.skip} · unscored ${counts.unscored} (skip+unscored ${(counts.skip_or_unscored_rate * 100).toFixed(0)}%)`);
+  console.log(`sponsor-screen: ${counts.candidates} candidates → Apply ${counts.apply} · Consider ${counts.consider} · Skip ${counts.skip} · unscored ${counts.unscored} (skip+unscored ${(counts.skip_or_unscored_rate * 100).toFixed(0)}%)`);
   for (const [k, v] of Object.entries(unscoredReasons)) console.log(`  unscored: ${k} × ${v}`);
+  const ghClosed = results.filter((r) => r.gates.G2_liveness?.closed_by === 'greenhouse-api-404');
+  const ghChecked = results.filter((r) => r.gates.G2_liveness?.cross_check?.status === 'checked').length;
+  console.log(`  greenhouse cross-check: ${gh ? `${ghChecked} checked (status file ${gh.checked})` : 'not run'}${ghClosed.length ? ` · closed ${ghClosed.length} redirected dead posting(s): ${ghClosed.map((r) => r.role_id).join(', ')}` : ''}`);
   console.log(`  timeline gate: factor ${timeline.factor} [your-input] · earliest start ${timeline.detail.earliest_start} · practical deadline ${timeline.detail.practical_deadline} · slack ${timeline.detail.slack_days} days`);
   console.log(`  ${log.outputs.log}  +  ${log.outputs.report}`);
   if (violations.length) {
@@ -331,21 +354,62 @@ function main() {
   }
 }
 
+// ── priority order for the person: where to spend the next hour first ──
+// 1 Apply · 2 Consider · 3 unscored but worth hand research (live posting, no
+// usable record yet) · 4 Skip that is a networking target · 5 Skip · 6 unscored
+// and out of scope. Within a group: higher composite, then higher fit.
+const RESEARCH_REASONS = new Set(['not-in-csv', 'ambiguous-match', 'no-h1b-record', 'url-not-in-liveness-log']);
+function priorityGroup(r) {
+  const rec = r.scorer?.recommendation;
+  if (rec === 'Apply') return { rank: 1, label: 'Apply now' };
+  if (rec === 'Consider') return { rank: 2, label: 'Consider' };
+  if (r.status === 'unscored' && RESEARCH_REASONS.has(r.reason)) return { rank: 3, label: 'Research first' };
+  if (rec === 'Skip' && r.network_target) return { rank: 4, label: 'Network, don\'t apply' };
+  if (rec === 'Skip') return { rank: 5, label: 'Skip' };
+  return { rank: 6, label: 'Out of scope' };
+}
+function byPriority(a, b) {
+  const ga = priorityGroup(a).rank; const gb = priorityGroup(b).rank;
+  if (ga !== gb) return ga - gb;
+  const ca = a.scorer?.composite ?? -1; const cb = b.scorer?.composite ?? -1;
+  if (ca !== cb) return cb - ca;
+  return (b.fit?.p ?? -1) - (a.fit?.p ?? -1);
+}
+function livenessShort(lv) {
+  if (!lv || lv.status !== 'ok') return `not checked (${lv?.reason ?? '—'})`;
+  const cc = lv.cross_check?.status === 'checked' ? ` · API ${lv.cross_check.http_status ?? 'error'}` : '';
+  if (lv.closed_by === 'greenhouse-api-404') return `❌ dead (checker said active, API 404)`;
+  return lv.factor > 0 ? `✅ open${cc}` : `❌ ${lv.detail.verdict}${lv.detail.stale ? ', stale' : ''}${cc}`;
+}
+
 // ── Markdown report for the person (P5: a different artifact from the log) ──
 function renderReport(log, persona) {
   const c = log.counts;
   const t = log.timeline_gate.detail;
   const L = (v, src) => `${v ?? '—'} \`${src}\``;
   const o = [];
-  o.push(`# Data Engineer sponsor triage — ${log.today}`);
+  o.push(`# Data Engineer sponsor screen — ${log.today}`);
   o.push('');
   o.push('## Executive summary');
   o.push('');
-  o.push(`**What this is.** A check of ${c.candidates} Data Engineer-type job postings for a fictional international student ("${persona.display_name ?? persona.persona_id}") who will need visa sponsorship. Each posting was checked against public records of past visa sponsorship, whether the posting is still open, and whether hiring can finish before the student's work-authorization window closes.`);
+  o.push(`**What this is.** A check of ${c.candidates} Data Engineer-type job postings for a fictional international student ("${persona.display_name ?? persona.persona_id}") who will need visa sponsorship. Each posting was checked for three things: whether public records show the company sponsoring H-1B visas for this kind of work, whether the posting is still open, and whether hiring can finish before the student's work-authorization window closes.`);
   o.push('');
   o.push(`**Why read it.** It tells you where to spend limited job-search hours, and shows where every number came from so you can check it before acting.`);
   o.push('');
   o.push(`**What it found.** ${c.apply} to apply to, ${c.consider} to consider, ${c.skip} to skip, and ${c.unscored} that could not be scored because evidence was missing. ${Math.round((c.skip_or_unscored_rate ?? 0) * 100)}% of postings ended as skip or unscored. ${log.status === 'complete' ? 'Nothing here is final: the checks marked "you must confirm" need a person before any application goes out.' : '**This run FAILED its safety check — do not use its recommendations.**'}`);
+  o.push('');
+  o.push('## Priority list (highest priority first)');
+  o.push('');
+  o.push('Order: **Apply now** → **Consider** → **Research first** (live posting, but no usable sponsorship record yet) → **Network, don\'t apply** (strong sponsor, posting closed) → **Skip** → **Out of scope**. Within a group, the higher score comes first.');
+  o.push('');
+  o.push('| # | Priority | Company | Job | Location | Score | Sponsorship record | Fit | Posting live? | What to do | Link |');
+  o.push('|---|---|---|---|---|---|---|---|---|---|---|');
+  [...log.roles].sort(byPriority).forEach((r, i) => {
+    const sp = r.sponsorship;
+    const spShort = sp?.status === 'ok' ? `${sp.tier} · ${sp.evidence.total_approvals.value} approvals` : `none found (${r.gates.G1_company_match?.reason ?? r.reason ?? '—'})`;
+    const score = r.scorer?.composite != null ? Number(r.scorer.composite).toFixed(3) : '—';
+    o.push(`| ${i + 1} | **${priorityGroup(r).label}** | ${r.company ?? '—'} | ${r.title ?? '—'} | ${r.location ?? '—'} | ${score} | ${spShort} | ${r.fit?.p ?? '—'} | ${livenessShort(r.gates.G2_liveness)} | ${r.next_action} | ${r.url ? `[open](${r.url})` : '—'} |`);
+  });
   o.push('');
   o.push('## Results');
   o.push('');
@@ -360,7 +424,12 @@ function renderReport(log, persona) {
       ? `${sp.tier}, p ${sp.p} \`${sp.p_source}\` · approvals ${L(ev.total_approvals.value, 'record')} · DE-family titles: ${ev.family_titles_matched.value.length ? ev.family_titles_matched.value.join('; ') : 'none'} \`model-judgment\``
       : sp ? `missing: ${sp.reason} (CSV row "${ev.csv_company_name.value}")` : `missing: ${r.gates.G1_company_match?.reason ?? 'not checked'}`;
     const lv = r.gates.G2_liveness;
-    const lvCell = lv?.status === 'ok' ? `${lv.detail.verdict} on ${lv.detail.checked_on}${lv.detail.stale ? ' (stale)' : ''} → factor ${lv.factor} \`record\`` : `missing: ${lv?.reason ?? 'not checked'}`;
+    const cc = lv?.cross_check;
+    const ccText = cc?.status === 'checked' ? ` · Greenhouse API ${cc.http_status ?? 'error'} (${cc.verdict}) on ${cc.checked_on} \`record\``
+      : cc ? ` · Greenhouse cross-check: ${cc.status}` : '';
+    const lvCell = lv?.status === 'ok'
+      ? `${lv.detail.verdict} on ${lv.detail.checked_on}${lv.detail.stale ? ' (stale)' : ''}${ccText} → factor ${lv.factor} \`record\`${lv.closed_by === 'greenhouse-api-404' ? ' — **closed: redirected dead posting**' : ''}`
+      : `missing: ${lv?.reason ?? 'not checked'}`;
     const res = r.status === 'unscored' ? `**unscored** (${r.reason})` : `**${r.scorer?.recommendation ?? '?'}** ${r.scorer?.composite != null ? Number(r.scorer.composite).toFixed(3) : ''}<br>${r.scorer?.why ?? ''}<br>\`${r.scorer?.arithmetic ?? ''}\``;
     const fit = r.fit ? `${r.fit.p} \`model-judgment\` — ${r.fit.reason}` : '—';
     o.push(`| ${r.company} — ${r.title} | ${res} | ${spCell} | ${fit} | ${lvCell} | ${r.next_action} |`);
@@ -391,7 +460,7 @@ function renderReport(log, persona) {
   o.push('- How many approvals were for Data Engineer roles. Approvals are company-wide; titles show only the top ~5.');
   o.push('- Anything about companies headquartered outside the six states the sponsor file covers (CA, NY, MA, WA, TX, IL). A missing record is not evidence of no sponsorship.');
   o.push('- Whether a company name variant (brand vs legal name) hides a real record. Matching is exact after normalization.');
-  o.push('- Whether an "active" posting is truly that job. The liveness checker can report a redirected dead posting as active.');
+  o.push('- Whether an "active" posting is truly that job, for non-Greenhouse links. The liveness checker can report a redirected dead posting as active; the Greenhouse API cross-check catches this only for Greenhouse job IDs, and an API 200 means the job exists, not that it is still being filled.');
   o.push('- E-Verify enrollment (needed for a STEM OPT extension), funding, and role quality or wages. Out of scope.');
   o.push('');
   o.push('## Run record');

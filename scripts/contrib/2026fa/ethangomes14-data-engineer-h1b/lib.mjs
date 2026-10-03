@@ -1,8 +1,8 @@
-// lib.mjs — pure helpers for the data-engineer-h1b triage prototype.
+// lib.mjs — pure helpers for the data-engineer-h1b sponsor-screen prototype.
 //
 // Everything here is deterministic and offline: CSV parsing, name
 // normalization, title-family matching, the sponsorship tier rule, the OPT
-// timeline rule, and the ats:liveness log parser. No function in this file
+// timeline rule, the ats:liveness log parser and the Greenhouse cross-check. No function in this file
 // computes an Apply/Consider/Skip decision — that is role-scorer.mjs's job.
 //
 // Source labels used throughout (SNICKERDOODLE P3, role-scorer.mjs SRC):
@@ -204,6 +204,61 @@ export function livenessFactor(url, live, today, rules) {
     detail: { verdict, checked_on: live.checked, age_days: age, stale },
     human_check: 'confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)',
   };
+}
+
+// ── Greenhouse cross-check (closes the redirect false positive) ─────────────
+// ats:liveness loads the page; a dead Greenhouse job ID redirects to the
+// company's careers page, which loads fine, so it reports "active". The public
+// job-board API answers directly: 200 = the job exists, 404 = it is gone.
+export const GREENHOUSE_API_HOST = 'boards-api.greenhouse.io';
+
+// Returns { board, jobId, boardFrom } or null. Never guesses a board name:
+// company-hosted pages (…?gh_jid=<id>) carry no board, so it must be supplied.
+export function parseGreenhouseUrl(url, boardHint = null) {
+  let u;
+  try { u = new URL(url); } catch { return null; }
+  const host = u.hostname.toLowerCase();
+  if (host === 'boards.greenhouse.io' || host === 'job-boards.greenhouse.io') {
+    const m = u.pathname.match(/^\/([^/]+)\/jobs\/(\d+)/);
+    if (m && m[1] !== 'embed') return { board: m[1], jobId: m[2], boardFrom: 'url' };
+    const forBoard = u.searchParams.get('for');
+    const token = u.searchParams.get('token') || u.searchParams.get('gh_jid');
+    if (forBoard && /^\d+$/.test(token || '')) return { board: forBoard, jobId: token, boardFrom: 'url' };
+    return null;
+  }
+  const ghJid = u.searchParams.get('gh_jid');
+  if (/^\d+$/.test(ghJid || '') && boardHint) return { board: boardHint, jobId: ghJid, boardFrom: 'candidate greenhouse_board' };
+  return null;
+}
+
+export function apiVerdict(httpStatus) {
+  if (httpStatus === 200) return 'exists';
+  if (httpStatus === 404) return 'gone';
+  return 'unknown';
+}
+
+// Reads the saved output of fetch-greenhouse-status.mjs.
+export function parseGreenhouseStatus(json) {
+  const byUrl = new Map();
+  for (const r of json?.results || []) byUrl.set(r.url, r);
+  return { checked: json?.checked ?? null, byUrl };
+}
+
+// Adjusts an ok liveness result. Only a definite 404 can close an open gate;
+// a missing, stale or failed check changes nothing (it is never assumed 200).
+export function applyGreenhouseCheck(lv, url, gh, today, rules) {
+  if (lv.status !== 'ok') return lv;
+  if (!gh) return { ...lv, cross_check: { status: 'not-run' } };
+  const r = gh.byUrl.get(url);
+  if (!r) return { ...lv, cross_check: { status: 'not-checked', note: 'URL not in the Greenhouse status file (not a Greenhouse link, or not fetched)' } };
+  const checked = parseDate(gh.checked);
+  const age = checked ? daysBetween(checked, today) : null;
+  if (age == null || age < 0 || age > rules.liveness.max_age_days) return { ...lv, cross_check: { status: 'stale', checked_on: gh.checked } };
+  const cc = { status: 'checked', http_status: r.http_status ?? null, verdict: apiVerdict(r.http_status), checked_on: gh.checked, board: r.board, job_id: r.job_id, source: SRC.record };
+  if (cc.verdict === 'gone' && lv.factor > 0) {
+    return { ...lv, factor: 0, cross_check: cc, closed_by: 'greenhouse-api-404', detail: { ...lv.detail, note: 'ats:liveness said active, but the Greenhouse API has no such job (redirected dead posting)' } };
+  }
+  return { ...lv, cross_check: cc };
 }
 
 // ── candidate-row validation (gate G0) ──────────────────────────────────────

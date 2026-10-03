@@ -11,6 +11,8 @@
 - A follow-up run with legal names showed one of those two was a strong sponsor whose posting deserved an Apply. That is the run's most important lesson.
 - The sample itself was biased toward sponsors, so it was not a fair test of how often the tool says Skip.
 
+> **Name note.** The program was renamed from `triage.mjs` to `sponsor-screen.mjs` in v0.3.1, after this run (outputs: `screen-log.json` / `screen-report.md` in `runs/screen-sample/`). The commands and output below show the **old name exactly as it was run**. A re-run under the new name with identical results is in `TEST-REPORT.md` §13.
+
 ---
 
 ## 1. Inputs
@@ -151,19 +153,49 @@ robinhood-senior-swe-data-engineering → Consider 0.29 | Possible | (0.4·0.35 
 
 **One concrete next improvement.** Add a small, reviewed **brand → legal-name alias table** (`aliases.json` in the contrib folder, every entry labelled `your-input` with a source note), checked *after* exact matching fails, with the alias shown in G1 for human confirmation. On this sample it would turn both `not-in-csv` rows into scored rows, including the hidden Apply, without introducing fuzzy matching.
 
+## 6. Follow-up the same day: v0.2.0 Greenhouse cross-check
+
+After the reflection above, Ethan asked for the liveness TODO to be built. The liveness checker's blind spot (it called an invented Airbnb job ID "active") now has a machine check for Greenhouse links:
+
+| Link | `ats:liveness` | Greenhouse API | Gate now |
+|---|---|---|---|
+| 6 live sample postings | active | 200 | open (unchanged) |
+| Stripe | uncertain | 200 | closed (unchanged: the check never re-opens a gate) |
+| Invented `airbnb/jobs/1` | **active** | **404** | **closed: redirected dead posting** |
+
+Sample results are unchanged (Apply 3 · Consider 1 · Skip 1 · unscored 2). The report now starts with a **priority list**, highest priority first: Sigma Computing, Klaviyo, Gusto (Apply) → Airbnb (Consider) → Gemini, Robinhood (Research first) → Stripe (Skip). Full output is in `TEST-REPORT.md` §11.
+
+## 7. Later the same day: v0.3.0 removes the visa-timeline gate
+
+Ethan decided the tool should answer only two questions: *has this company sponsored H-1Bs for this kind of work?* and *is the posting really open?* The timeline gate was removed. The report no longer has a timeline section, and the scorer is passed an explicit, labelled timeline factor of 1. Sample results are unchanged (Apply 3 · Consider 1 · Skip 1 · unscored 2), because every sample posting already passed the timeline. The trade-off: the tool no longer stops an Apply that couldn't start before the OPT deadline, so that check is back on the person. Output: `TEST-REPORT.md` §12.
+
+## 8. v0.4.0: timeline gate restored
+
+After checking the recipe against the assignment's checklist, Ethan restored the visa-timeline gate (the assignment says "liveness and visa timeline are gates"). He also added two typed proposed additions to the recipe: the brand → legal-name alias table from the reflection above, and dated visa data. Sample results are unchanged. The "after the OPT deadline" check skips every scored posting again (`TEST-REPORT.md` §14).
+
 ---
 
 ## Attestation
 
-- Recipe: ethangomes14-data-engineer-h1b v0.1.0
-- By: EthanGomes14 · 2026-10-03. **Pending:** the commands below were run by Claude (Claude Code) in a session directed by EthanGomes14. EthanGomes14 signs this after re-running at least the sample run, the tests and one break attempt, and opening the G2 links.
+- Recipe: ethangomes14-data-engineer-h1b v0.1.0, re-checked at v0.3.1; v0.4.0 pending re-check
+- By: Ethan Gomes (EthanGomes14) · 2026-10-03. Ethan did three things himself, shown in the first three rows below:
+  - re-ran the sample triage and the 12 tests on his own laptop, with identical results
+  - hand-checked the Sigma Computing row against the raw CSV
+  - opened all six "active" job links (gate G2)
+
+  The other rows were run by Claude (Claude Code) in the same session.
+- **Scope:** first signed for **v0.1.0**. The script changes in v0.2.0 (Greenhouse cross-check), v0.3.0 (timeline gate removed) and v0.3.1 (rename) void an attestation under `SNICKERDOODLE.md` until it is re-checked. **Re-checked at v0.3.1 on 2026-10-03:** Ethan ran `sponsor-screen.mjs` and the 13 tests on his own laptop, with identical results (row below). The CSV hand check and the six G2 links were done at v0.1.0; the sponsor data and the seven postings are unchanged since then. **v0.4.0** (timeline gate restored) changed the scripts again, so Ethan re-runs `sponsor-screen.mjs` and the 15 tests once more.
 
 ### Tested
 
 | Ran | Saw | Expected |
 |---|---|---|
+| **Ethan, on his own laptop:** the sample triage, then `node --test …/triage.test.mjs` | 7 → Apply 3 · Consider 1 · Skip 1 · unscored 2; 12 pass, 0 fail | Same as the committed sample and the clean checkout |
+| **Ethan, on his own laptop, v0.3.1:** `node …/sponsor-screen.mjs --today 2026-10-03`, then `node --test …/sponsor-screen.test.mjs` | 7 → Apply 3 · Consider 1 · Skip 1 · unscored 2; Greenhouse cross-check 7 checked; timeline "not evaluated"; 13 pass, 0 fail | Same results as every earlier version; all tests pass |
+| **Ethan, by hand:** read the `SIGMA COMPUTING INC` row straight from the CSV with Python | `136.0` approvals; titles include "Senior Analytics Engineer" and "Engineering Manager" | 136 approvals; the Analytics Engineer title counted, the Manager title excluded, as the report shows |
+| **Ethan, gate G2:** opened the six "active" links from the report (Sigma Computing, Klaviyo, Gusto, Gemini, Airbnb, Robinhood) | Each opened the listed job; no problems found | Each lands on that specific posting, not a general careers page |
 | `node scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/triage.mjs --today 2026-10-03` (clean checkout) | 7 → Apply 3 · Consider 1 · Skip 1 · unscored 2; exit 0; only `generated_at` differs from the committed outputs | Same results as the committed sample; nothing written outside own folders |
-| `node --test …/triage.test.mjs` (clean checkout, `4b3c9de`) | 12 pass, 0 fail | All pass offline |
+| `node --test …/triage.test.mjs` (clean checkout, `acd2286`) | 12 pass, 0 fail | All pass offline |
 | Hand cross-check of 7 CSV rows with Python's `csv` module | Approvals, titles and states identical to the report | Identical |
 | **Break:** `npm run ats:liveness -- https://boards.greenhouse.io/airbnb/jobs/1` (invented job ID) | ✅ active (redirect to the careers page) | Expected the checker to say expired. **It doesn't**, so G2 needs a human. Documented, not hidden. |
 | **Break:** `--scorer fixtures/BROKEN-apply-everything-scorer.mjs` (a scorer that ignores gates) | exit 3, `FAILED-gate-invariant`, violation on `ghosthire-de` | Refuse the run |
@@ -171,6 +203,10 @@ robinhood-senior-swe-data-engineering → Consider 0.29 | Possible | (0.4·0.35 
 | **Break:** `--csv fixtures/does-not-exist.csv` | `STOP: sponsor CSV not found`, exit 2, no log written | Stop without inventing anything |
 | **Break:** `--today 2027-06-01` (OPT deadline passed) | Timeline factor 0, slack −57 days, all 5 scored → Skip | Every scored role Skip |
 | What-if: Gemini/Robinhood retyped as legal names | Gemini → Apply 0.465 (Proven); Robinhood → Consider 0.29 | Confirms both `not-in-csv` rows were name misses, not non-sponsors |
+| **v0.2.0 (Claude):** `fetch-greenhouse-status.mjs` on the 7 sample links + the invented ID | 7 × `200 exists`, 1 × `404 gone` (airbnb/1) | Real postings exist; invented ID gone |
+| **v0.2.0 break (Claude):** triage on the invented Airbnb ID, which `ats:liveness` calls active | `closed 1 redirected dead posting(s)`; Skip | The cross-check closes the gate the checker left open |
+| **v0.2.0 (Claude):** triage on the sample + 15 tests | Apply 3 · Consider 1 · Skip 1 · unscored 2 (unchanged); 15 pass | Unchanged results; all tests pass |
+| **v0.3.0 (Claude):** triage on the sample + ghost + 13 tests, timeline gate removed | Same results; ghost still closed; timeline "not evaluated"; 13 pass | Unchanged results; no timeline section in the report |
 
 ### Did not test
 
@@ -179,11 +215,10 @@ robinhood-senior-swe-data-engineering → Consider 0.29 | Possible | (0.4·0.35 
 - A live run with a person clearing every gate.
 - The six-state blind spot (P3) and title over-match (F8) on real postings.
 - A real `expired` verdict from the liveness checker (only a fixture, and the invented-ID case that came back active).
-- Opening the six "active" links by hand (G2). **This is the human's job before acting.**
 - Whether past sponsors still sponsor today. The data cannot say.
 
 ### Broke during testing, fixed
 
-- The CSV-quoting test asserted the wrong column (a fixture column miscount, not a parser bug). Fixed the assertion. (`09c3fd6`)
-- The out-dir check refused `/tmp` on macOS (a symlink to `/private/tmp`). Fixed with real-path comparison. (`09c3fd6`)
-- The out-dir check allowed *any* repo path when the repo itself lived under `/tmp`. Found only by the clean-checkout run. Fixed: in-repo paths must be in the contribution's folders. (`4b3c9de`)
+- The CSV-quoting test asserted the wrong column (a fixture column miscount, not a parser bug). Fixed the assertion. (`c1d3abc`)
+- The out-dir check refused `/tmp` on macOS (a symlink to `/private/tmp`). Fixed with real-path comparison. (`c1d3abc`)
+- The out-dir check allowed *any* repo path when the repo itself lived under `/tmp`. Found only by the clean-checkout run. Fixed: in-repo paths must be in the contribution's folders. (`acd2286`)
