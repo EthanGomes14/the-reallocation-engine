@@ -1,0 +1,48 @@
+{
+  "_notice": "FICTIONAL PERSONA - invented for this recipe. Not based on any real person's resume, school, dates, location, or contact details. No email or phone on purpose.",
+  "persona_id": "electrifier",
+  "display_name": "Electrifier",
+  "source": "your-input",
+  "needs_sponsorship": true,
+  "visa_status_note": "F-1 student; post-completion OPT expected; will need H-1B sponsorship to stay long-term. (Field deliberately not named 'authorization': role-scorer.mjs applyProfile() switches sponsorship off when that text contains words like 'authorized'.)",
+  "education": {
+    "degree": "M.S. in Data Science",
+    "school": "fictional, unnamed",
+    "stage": "final semester",
+    "program_end": "2026-12-18"
+  },
+  "target_role": {
+    "primary": "Data Engineer",
+    "level": "new-grad / early-career (0-2 years)",
+    "generalized_description": "Builds and maintains batch and streaming data pipelines (ETL/ELT), data warehouses and lakehouses, and data platform tooling so analysts and ML teams get reliable, modeled data.",
+    "title_family": [
+      "Data Engineer",
+      "Analytics Engineer",
+      "ETL Developer / ETL Engineer",
+      "Data Warehouse Engineer / Developer",
+      "Big Data Engineer / Developer",
+      "Data Platform Engineer",
+      "Data Pipeline Engineer",
+      "Data Integration Engineer / Developer",
+      "Data Infrastructure Engineer",
+      "Business Intelligence (BI) Engineer",
+      "Database Developer",
+      "Software Engineer, Data (or Data Platform / Data Infrastructure)"
+    ],
+    "title_exclusions": ["Manager", "Director", "Head of", "VP", "Analyst", "Specialist", "Architect", "Scientist"]
+  },
+  "skills_summary": ["Python", "SQL", "Apache Spark", "Apache Airflow", "dbt", "AWS (S3, Glue, Redshift)", "Docker", "Kafka (coursework)"],
+  "geography": {
+    "base": "Chicago, IL",
+    "open_to_relocation": true,
+    "search_scope": "anywhere in the USA"
+  },
+  "visa_timeline": {
+    "opt_start": "2027-03-01",
+    "unemployment_limit_days": 90,
+    "unemployment_limit_basis": "post-completion OPT rule, 8 CFR 214.2(f)(10)(ii)(E)",
+    "unemployment_days_used": 0,
+    "buffer_days": 10,
+    "assumed_hiring_lag_days": 45
+  }
+}
