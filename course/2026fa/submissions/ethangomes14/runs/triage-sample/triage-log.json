@@ -1,0 +1,882 @@
+{
+  "workflow": "ethangomes14-data-engineer-h1b",
+  "recipe": "recipes/cases/2026fa/ethangomes14-data-engineer-h1b.md",
+  "recipe_version": "0.1.0",
+  "mode": "sample",
+  "status": "complete",
+  "generated_at": "2026-10-03T20:03:21.833Z",
+  "today": "2026-10-03",
+  "inputs": {
+    "candidates": {
+      "path": "scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/samples/candidates-2026-10-03.json",
+      "sha256": "f3a5ce86a10ca5c2134a854a201c839f448c51f60a336861ab7d509c7c3664c9"
+    },
+    "liveness_log": {
+      "path": "scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/samples/liveness-2026-10-03.txt",
+      "sha256": "508474b74ff2457a68e911f733f03ca4c923a06e8d4ff99e9d49f48aa85f4d78",
+      "checked": "2026-10-03"
+    },
+    "persona": {
+      "path": "scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/fixtures/persona-electrifier.json",
+      "id": "electrifier"
+    },
+    "sponsor_csv": {
+      "path": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv",
+      "sha256": "eccdee2addf472b1639269f42eec693b083b7ce251347d5fd0b2856cfdae6270",
+      "rows": 30369
+    },
+    "rules": {
+      "path": "scripts/contrib/2026fa/ethangomes14-data-engineer-h1b/rules.json"
+    },
+    "scorer": {
+      "path": "scripts/score/role-scorer.mjs"
+    }
+  },
+  "timeline_gate": {
+    "status": "ok",
+    "factor": 1,
+    "source": "your-input",
+    "detail": {
+      "today": "2026-10-03",
+      "opt_start": "2027-03-01",
+      "hiring_lag_days": 45,
+      "buffer_days": 10,
+      "legal_deadline": "2027-05-30",
+      "practical_deadline": "2027-05-20",
+      "earliest_start": "2027-03-01",
+      "earliest_start_bound_by": "OPT start (cannot work before OPT begins)",
+      "slack_days": 80
+    }
+  },
+  "counts": {
+    "candidates": 7,
+    "unscored": 2,
+    "apply": 3,
+    "consider": 1,
+    "skip": 1,
+    "skip_or_unscored_rate": 0.429
+  },
+  "unscored_reasons": {
+    "not-in-csv": 2
+  },
+  "gate_invariant_violations": [],
+  "roles": [
+    {
+      "role_id": "sigma-data-engineer-nyc",
+      "company": "Sigma Computing",
+      "title": "Data Engineer",
+      "url": "https://job-boards.greenhouse.io/sigmacomputing/jobs/7809974003",
+      "gates": {
+        "G0_input": {
+          "pass": true
+        },
+        "G2_liveness": {
+          "status": "ok",
+          "factor": 1,
+          "source": "record",
+          "detail": {
+            "verdict": "active",
+            "checked_on": "2026-10-03",
+            "age_days": 0,
+            "stale": false
+          },
+          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)"
+        },
+        "G1_company_match": {
+          "pass": true,
+          "normalized_name": "sigma computing",
+          "reason": null,
+          "human_check": "confirm the CSV row is the same employer and the matched titles are Data Engineer-type work"
+        }
+      },
+      "status": "scoreable",
+      "fit": {
+        "p": 0.7,
+        "source": "model-judgment",
+        "reason": "Exact target title with no seniority marker; US location. Stack not checked (description not read)."
+      },
+      "posting_title_in_family": {
+        "value": true,
+        "source": "model-judgment"
+      },
+      "sponsorship": {
+        "status": "ok",
+        "tier": "Proven",
+        "p": 0.9,
+        "p_source": "model-judgment",
+        "note": null,
+        "evidence": {
+          "csv_company_name": {
+            "value": "SIGMA COMPUTING INC",
+            "source": "record"
+          },
+          "hq_state": {
+            "value": "CA",
+            "source": "record"
+          },
+          "total_approvals": {
+            "value": 136,
+            "source": "record"
+          },
+          "total_denials": {
+            "value": 0,
+            "source": "record"
+          },
+          "approval_rate_pct": {
+            "value": 100,
+            "source": "record"
+          },
+          "median_salary_offered": {
+            "value": 150000,
+            "source": "record"
+          },
+          "top_titles_sponsored": {
+            "value": [
+              "Software Engineer",
+              "Senior Analytics Engineer",
+              "Engineering Manager",
+              "Field and Partner Marketing Manager"
+            ],
+            "source": "record"
+          },
+          "family_titles_matched": {
+            "value": [
+              "Senior Analytics Engineer"
+            ],
+            "source": "model-judgment"
+          }
+        }
+      },
+      "scorer": {
+        "recommendation": "Apply",
+        "composite": 0.525,
+        "why": "composite 0.525 ≥ 0.3, gates healthy",
+        "arithmetic": "(0.9·0.35 + 0.7·0.3) × 1 × 1 = 0.525",
+        "trace": {
+          "votes": [
+            {
+              "factor": "sponsorship",
+              "value": 0.9,
+              "weight": 0.35,
+              "contribution": 0.315,
+              "source": "model-judgment"
+            },
+            {
+              "factor": "fit",
+              "value": 0.7,
+              "weight": 0.3,
+              "contribution": 0.21,
+              "source": "model-judgment"
+            }
+          ],
+          "vote_sum": 0.525,
+          "gates": [
+            {
+              "factor": "liveness",
+              "multiplier": 1,
+              "source": "record"
+            },
+            {
+              "factor": "timeline",
+              "multiplier": 1,
+              "source": "your-input"
+            }
+          ],
+          "gate_product": 1,
+          "arithmetic": "(0.9·0.35 + 0.7·0.3) × 1 × 1 = 0.525"
+        }
+      },
+      "next_action": "Tailor an application (research-and-apply hours)."
+    },
+    {
+      "role_id": "klaviyo-analytics-engineer-boston",
+      "company": "Klaviyo",
+      "title": "Analytics Engineer",
+      "url": "https://www.klaviyo.com/careers/jobs/7737707003?gh_jid=7737707003",
+      "gates": {
+        "G0_input": {
+          "pass": true
+        },
+        "G2_liveness": {
+          "status": "ok",
+          "factor": 1,
+          "source": "record",
+          "detail": {
+            "verdict": "active",
+            "checked_on": "2026-10-03",
+            "age_days": 0,
+            "stale": false
+          },
+          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)"
+        },
+        "G1_company_match": {
+          "pass": true,
+          "normalized_name": "klaviyo",
+          "reason": null,
+          "human_check": "confirm the CSV row is the same employer and the matched titles are Data Engineer-type work"
+        }
+      },
+      "status": "scoreable",
+      "fit": {
+        "p": 0.7,
+        "source": "model-judgment",
+        "reason": "Data Engineer-family title (SQL/dbt modelling side, matching persona skills); no seniority marker; US location."
+      },
+      "posting_title_in_family": {
+        "value": true,
+        "source": "model-judgment"
+      },
+      "sponsorship": {
+        "status": "ok",
+        "tier": "Proven",
+        "p": 0.9,
+        "p_source": "model-judgment",
+        "note": null,
+        "evidence": {
+          "csv_company_name": {
+            "value": "KLAVIYO INC",
+            "source": "record"
+          },
+          "hq_state": {
+            "value": "MA",
+            "source": "record"
+          },
+          "total_approvals": {
+            "value": 154,
+            "source": "record"
+          },
+          "total_denials": {
+            "value": 4,
+            "source": "record"
+          },
+          "approval_rate_pct": {
+            "value": 97.46835443037976,
+            "source": "record"
+          },
+          "median_salary_offered": {
+            "value": 126000,
+            "source": "record"
+          },
+          "top_titles_sponsored": {
+            "value": [
+              "Business Intelligence Engineer",
+              "Software Engineer II",
+              "Engineering Manager Data Exchange",
+              "Engineering Manager II- SMS",
+              "Senior Software Engineer"
+            ],
+            "source": "record"
+          },
+          "family_titles_matched": {
+            "value": [
+              "Business Intelligence Engineer"
+            ],
+            "source": "model-judgment"
+          }
+        }
+      },
+      "scorer": {
+        "recommendation": "Apply",
+        "composite": 0.525,
+        "why": "composite 0.525 ≥ 0.3, gates healthy",
+        "arithmetic": "(0.9·0.35 + 0.7·0.3) × 1 × 1 = 0.525",
+        "trace": {
+          "votes": [
+            {
+              "factor": "sponsorship",
+              "value": 0.9,
+              "weight": 0.35,
+              "contribution": 0.315,
+              "source": "model-judgment"
+            },
+            {
+              "factor": "fit",
+              "value": 0.7,
+              "weight": 0.3,
+              "contribution": 0.21,
+              "source": "model-judgment"
+            }
+          ],
+          "vote_sum": 0.525,
+          "gates": [
+            {
+              "factor": "liveness",
+              "multiplier": 1,
+              "source": "record"
+            },
+            {
+              "factor": "timeline",
+              "multiplier": 1,
+              "source": "your-input"
+            }
+          ],
+          "gate_product": 1,
+          "arithmetic": "(0.9·0.35 + 0.7·0.3) × 1 × 1 = 0.525"
+        }
+      },
+      "next_action": "Tailor an application (research-and-apply hours)."
+    },
+    {
+      "role_id": "gusto-senior-data-engineer",
+      "company": "Gusto",
+      "title": "Senior Data Engineer",
+      "url": "https://job-boards.greenhouse.io/gusto/jobs/8099751",
+      "gates": {
+        "G0_input": {
+          "pass": true
+        },
+        "G2_liveness": {
+          "status": "ok",
+          "factor": 1,
+          "source": "record",
+          "detail": {
+            "verdict": "active",
+            "checked_on": "2026-10-03",
+            "age_days": 0,
+            "stale": false
+          },
+          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)"
+        },
+        "G1_company_match": {
+          "pass": true,
+          "normalized_name": "gusto",
+          "reason": null,
+          "human_check": "confirm the CSV row is the same employer and the matched titles are Data Engineer-type work"
+        }
+      },
+      "status": "scoreable",
+      "fit": {
+        "p": 0.5,
+        "source": "model-judgment",
+        "reason": "Right work, but 'Senior' is about one level above a new grad: a stretch."
+      },
+      "posting_title_in_family": {
+        "value": true,
+        "source": "model-judgment"
+      },
+      "sponsorship": {
+        "status": "ok",
+        "tier": "Proven",
+        "p": 0.9,
+        "p_source": "model-judgment",
+        "note": null,
+        "evidence": {
+          "csv_company_name": {
+            "value": "GUSTO INC",
+            "source": "record"
+          },
+          "hq_state": {
+            "value": "CA",
+            "source": "record"
+          },
+          "total_approvals": {
+            "value": 218,
+            "source": "record"
+          },
+          "total_denials": {
+            "value": 4,
+            "source": "record"
+          },
+          "approval_rate_pct": {
+            "value": 98.1981981981982,
+            "source": "record"
+          },
+          "median_salary_offered": {
+            "value": 193000,
+            "source": "record"
+          },
+          "top_titles_sponsored": {
+            "value": [
+              "Software Engineer",
+              "Senior Analyst, Marketing Insights & Analytics",
+              "Software Engineer Manager",
+              "Business Intelligence Engineer",
+              "Head of Product Management, Tax Credits"
+            ],
+            "source": "record"
+          },
+          "family_titles_matched": {
+            "value": [
+              "Business Intelligence Engineer"
+            ],
+            "source": "model-judgment"
+          }
+        }
+      },
+      "scorer": {
+        "recommendation": "Apply",
+        "composite": 0.465,
+        "why": "composite 0.465 ≥ 0.3, gates healthy",
+        "arithmetic": "(0.9·0.35 + 0.5·0.3) × 1 × 1 = 0.465",
+        "trace": {
+          "votes": [
+            {
+              "factor": "sponsorship",
+              "value": 0.9,
+              "weight": 0.35,
+              "contribution": 0.315,
+              "source": "model-judgment"
+            },
+            {
+              "factor": "fit",
+              "value": 0.5,
+              "weight": 0.3,
+              "contribution": 0.15,
+              "source": "model-judgment"
+            }
+          ],
+          "vote_sum": 0.465,
+          "gates": [
+            {
+              "factor": "liveness",
+              "multiplier": 1,
+              "source": "record"
+            },
+            {
+              "factor": "timeline",
+              "multiplier": 1,
+              "source": "your-input"
+            }
+          ],
+          "gate_product": 1,
+          "arithmetic": "(0.9·0.35 + 0.5·0.3) × 1 × 1 = 0.465"
+        }
+      },
+      "next_action": "Tailor an application (research-and-apply hours)."
+    },
+    {
+      "role_id": "gemini-senior-data-engineer",
+      "company": "Gemini",
+      "title": "Senior Data Engineer",
+      "url": "https://boards.greenhouse.io/embed/job_app?for=gemini&token=8076827&gh_jid=8076827",
+      "gates": {
+        "G0_input": {
+          "pass": true
+        },
+        "G2_liveness": {
+          "status": "ok",
+          "factor": 1,
+          "source": "record",
+          "detail": {
+            "verdict": "active",
+            "checked_on": "2026-10-03",
+            "age_days": 0,
+            "stale": false
+          },
+          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)"
+        },
+        "G1_company_match": {
+          "pass": false,
+          "reason": "not-in-csv",
+          "normalized_name": "gemini"
+        }
+      },
+      "status": "unscored",
+      "fit": {
+        "p": 0.5,
+        "source": "model-judgment",
+        "reason": "Right work, one level too senior; remote-in-US option helps a relocating candidate."
+      },
+      "posting_title_in_family": {
+        "value": true,
+        "source": "model-judgment"
+      },
+      "reason": "not-in-csv",
+      "next_action": "No sponsorship record found under this name. Check name variants by hand (legal vs brand name) before spending time."
+    },
+    {
+      "role_id": "airbnb-senior-staff-data-engineer",
+      "company": "Airbnb",
+      "title": "Senior Staff Data Engineer, Foundational Data",
+      "url": "https://careers.airbnb.com/positions/8224032?gh_jid=8224032",
+      "gates": {
+        "G0_input": {
+          "pass": true
+        },
+        "G2_liveness": {
+          "status": "ok",
+          "factor": 1,
+          "source": "record",
+          "detail": {
+            "verdict": "active",
+            "checked_on": "2026-10-03",
+            "age_days": 0,
+            "stale": false
+          },
+          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)"
+        },
+        "G1_company_match": {
+          "pass": true,
+          "normalized_name": "airbnb",
+          "reason": null,
+          "human_check": "confirm the CSV row is the same employer and the matched titles are Data Engineer-type work"
+        }
+      },
+      "status": "scoreable",
+      "fit": {
+        "p": 0.3,
+        "source": "model-judgment",
+        "reason": "Senior Staff is several levels above new-grad; poor fit despite the right domain."
+      },
+      "posting_title_in_family": {
+        "value": true,
+        "source": "model-judgment"
+      },
+      "sponsorship": {
+        "status": "ok",
+        "tier": "Possible",
+        "p": 0.4,
+        "p_source": "model-judgment",
+        "note": "no Data Engineer-family title among the listed top sponsored titles; the list holds only ~5 titles, so absence is not proof",
+        "evidence": {
+          "csv_company_name": {
+            "value": "AIRBNB INC",
+            "source": "record"
+          },
+          "hq_state": {
+            "value": "CA",
+            "source": "record"
+          },
+          "total_approvals": {
+            "value": 1000,
+            "source": "record"
+          },
+          "total_denials": {
+            "value": 10,
+            "source": "record"
+          },
+          "approval_rate_pct": {
+            "value": 99.009900990099,
+            "source": "record"
+          },
+          "median_salary_offered": {
+            "value": 158080,
+            "source": "record"
+          },
+          "top_titles_sponsored": {
+            "value": [
+              "Software Engineer",
+              "Senior Software Engineer",
+              "Data Scientist",
+              "Senior Data Scientist",
+              "Engineering Manager"
+            ],
+            "source": "record"
+          },
+          "family_titles_matched": {
+            "value": [],
+            "source": "model-judgment"
+          }
+        }
+      },
+      "scorer": {
+        "recommendation": "Consider",
+        "composite": 0.23,
+        "why": "composite 0.230 in the Consider band [0.2, 0.3)",
+        "arithmetic": "(0.4·0.35 + 0.3·0.3) × 1 × 1 = 0.230",
+        "trace": {
+          "votes": [
+            {
+              "factor": "sponsorship",
+              "value": 0.4,
+              "weight": 0.35,
+              "contribution": 0.14,
+              "source": "model-judgment"
+            },
+            {
+              "factor": "fit",
+              "value": 0.3,
+              "weight": 0.3,
+              "contribution": 0.09,
+              "source": "model-judgment"
+            }
+          ],
+          "vote_sum": 0.23,
+          "gates": [
+            {
+              "factor": "liveness",
+              "multiplier": 1,
+              "source": "record"
+            },
+            {
+              "factor": "timeline",
+              "multiplier": 1,
+              "source": "your-input"
+            }
+          ],
+          "gate_product": 1,
+          "arithmetic": "(0.4·0.35 + 0.3·0.3) × 1 × 1 = 0.230"
+        }
+      },
+      "next_action": "Check the soft spot named in \"why\"; if it holds up, talk to someone at the company before applying (networking hours)."
+    },
+    {
+      "role_id": "robinhood-senior-swe-data-engineering",
+      "company": "Robinhood",
+      "title": "Senior Software Engineer, Data Engineering",
+      "url": "https://boards.greenhouse.io/robinhood/jobs/4738660?t=gh_src=&gh_jid=4738660",
+      "gates": {
+        "G0_input": {
+          "pass": true
+        },
+        "G2_liveness": {
+          "status": "ok",
+          "factor": 1,
+          "source": "record",
+          "detail": {
+            "verdict": "active",
+            "checked_on": "2026-10-03",
+            "age_days": 0,
+            "stale": false
+          },
+          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)"
+        },
+        "G1_company_match": {
+          "pass": false,
+          "reason": "not-in-csv",
+          "normalized_name": "robinhood"
+        }
+      },
+      "status": "unscored",
+      "fit": {
+        "p": 0.5,
+        "source": "model-judgment",
+        "reason": "Data engineering work at senior level: a stretch for a new grad."
+      },
+      "posting_title_in_family": {
+        "value": true,
+        "source": "model-judgment"
+      },
+      "reason": "not-in-csv",
+      "next_action": "No sponsorship record found under this name. Check name variants by hand (legal vs brand name) before spending time."
+    },
+    {
+      "role_id": "stripe-swe-data-orchestration",
+      "company": "Stripe",
+      "title": "Software Engineer, Data Orchestration",
+      "url": "https://stripe.com/jobs/search?gh_jid=7230670",
+      "gates": {
+        "G0_input": {
+          "pass": true
+        },
+        "G2_liveness": {
+          "status": "ok",
+          "factor": 0,
+          "source": "record",
+          "detail": {
+            "verdict": "uncertain",
+            "checked_on": "2026-10-03",
+            "age_days": 0,
+            "stale": false
+          },
+          "human_check": "confirm the final page after redirects is this specific job, not a general careers page (ats:liveness can report a redirected dead posting as active)"
+        },
+        "G1_company_match": {
+          "pass": true,
+          "normalized_name": "stripe",
+          "reason": null,
+          "human_check": "confirm the CSV row is the same employer and the matched titles are Data Engineer-type work"
+        }
+      },
+      "status": "scoreable",
+      "fit": {
+        "p": 0.7,
+        "source": "model-judgment",
+        "reason": "Orchestration work lines up with the persona's Airflow skill; no seniority marker; location unknown."
+      },
+      "posting_title_in_family": {
+        "value": true,
+        "source": "model-judgment"
+      },
+      "sponsorship": {
+        "status": "ok",
+        "tier": "Possible",
+        "p": 0.4,
+        "p_source": "model-judgment",
+        "note": "no Data Engineer-family title among the listed top sponsored titles; the list holds only ~5 titles, so absence is not proof",
+        "evidence": {
+          "csv_company_name": {
+            "value": "STRIPE INC",
+            "source": "record"
+          },
+          "hq_state": {
+            "value": "CA",
+            "source": "record"
+          },
+          "total_approvals": {
+            "value": 1250,
+            "source": "record"
+          },
+          "total_denials": {
+            "value": 22,
+            "source": "record"
+          },
+          "approval_rate_pct": {
+            "value": 98.27044025157232,
+            "source": "record"
+          },
+          "median_salary_offered": {
+            "value": 158371,
+            "source": "record"
+          },
+          "top_titles_sponsored": {
+            "value": [
+              "Software Engineer",
+              "Backend Engineer",
+              "Risk Strategist",
+              "Product Manager",
+              "Engineering Manager"
+            ],
+            "source": "record"
+          },
+          "family_titles_matched": {
+            "value": [],
+            "source": "model-judgment"
+          }
+        }
+      },
+      "scorer": {
+        "recommendation": "Skip",
+        "composite": 0,
+        "why": "gated: liveness ≈ 0.000 (a closed gate zeroes the composite regardless of votes)",
+        "arithmetic": "(0.4·0.35 + 0.7·0.3) × 0 × 1 = 0.000",
+        "trace": {
+          "votes": [
+            {
+              "factor": "sponsorship",
+              "value": 0.4,
+              "weight": 0.35,
+              "contribution": 0.14,
+              "source": "model-judgment"
+            },
+            {
+              "factor": "fit",
+              "value": 0.7,
+              "weight": 0.3,
+              "contribution": 0.21,
+              "source": "model-judgment"
+            }
+          ],
+          "vote_sum": 0.35,
+          "gates": [
+            {
+              "factor": "liveness",
+              "multiplier": 0,
+              "source": "record"
+            },
+            {
+              "factor": "timeline",
+              "multiplier": 1,
+              "source": "your-input"
+            }
+          ],
+          "gate_product": 0,
+          "arithmetic": "(0.4·0.35 + 0.7·0.3) × 0 × 1 = 0.000"
+        }
+      },
+      "next_action": "Skip. Time is better spent elsewhere."
+    }
+  ],
+  "network_list": {
+    "source": "record",
+    "note": "Proven-tier Data Engineer-family sponsors not on the candidate list, by total approvals (company-wide). Title matching is model-judgment.",
+    "companies": [
+      {
+        "company": "AMGEN INC",
+        "hq_state": "CA",
+        "total_approvals": 1882,
+        "family_titles": [
+          "Data Engineer 20516.3745"
+        ]
+      },
+      {
+        "company": "HUMAN INC",
+        "hq_state": "WA",
+        "total_approvals": 1382,
+        "family_titles": [
+          "Data Engineer 2"
+        ]
+      },
+      {
+        "company": "ZOOX INC",
+        "hq_state": "CA",
+        "total_approvals": 1364,
+        "family_titles": [
+          "Data Engineer"
+        ]
+      },
+      {
+        "company": "DOCUSIGN INC",
+        "hq_state": "CA",
+        "total_approvals": 1082,
+        "family_titles": [
+          "Data Engineer"
+        ]
+      },
+      {
+        "company": "ROKU INC",
+        "hq_state": "CA",
+        "total_approvals": 654,
+        "family_titles": [
+          "Senior Data Engineer"
+        ]
+      },
+      {
+        "company": "VISICON TECHNOLOGIES INC",
+        "hq_state": "CA",
+        "total_approvals": 330,
+        "family_titles": [
+          "Data Engineer",
+          "Data Engineer"
+        ]
+      },
+      {
+        "company": "UPSTART NETWORK INC",
+        "hq_state": "CA",
+        "total_approvals": 316,
+        "family_titles": [
+          "Data Engineer"
+        ]
+      },
+      {
+        "company": "QUANTIPHI INC",
+        "hq_state": "MA",
+        "total_approvals": 270,
+        "family_titles": [
+          "Senior Data Engineer"
+        ]
+      },
+      {
+        "company": "RIPPLE LABS INC",
+        "hq_state": "CA",
+        "total_approvals": 200,
+        "family_titles": [
+          "Senior Software Engineer, Data"
+        ]
+      },
+      {
+        "company": "PROCORE TECHNOLOGIES INC",
+        "hq_state": "CA",
+        "total_approvals": 190,
+        "family_titles": [
+          "Senior Data Engineer"
+        ]
+      }
+    ],
+    "total_proven_family_sponsors": 56
+  },
+  "human_gates_pending": [
+    "G1: confirm each matched CSV row is the same employer and its matched titles are Data Engineer-type work",
+    "G2: confirm each \"active\" posting URL lands on the specific job, not a general careers page",
+    "G3: confirm the persona timeline inputs (OPT start, hiring lag, buffer)",
+    "G4: read the Markdown report before acting on any Apply"
+  ],
+  "outputs": {
+    "log": "course/2026fa/submissions/ethangomes14/runs/triage-sample/triage-log.json",
+    "report": "course/2026fa/submissions/ethangomes14/runs/triage-sample/triage-report.md",
+    "roles_json": "course/2026fa/submissions/ethangomes14/runs/triage-sample/roles.json",
+    "scorer_json": "course/2026fa/submissions/ethangomes14/runs/triage-sample/role-scores.json",
+    "scorer_md": "course/2026fa/submissions/ethangomes14/runs/triage-sample/role-scores.md"
+  },
+  "scorer_stdout": "✓ scored 5 roles → Apply 3 · Consider 1 · Skip 1 (skip 20%)\n  course/2026fa/submissions/ethangomes14/runs/triage-sample/role-scores.json  +  course/2026fa/submissions/ethangomes14/runs/triage-sample/role-scores.md"
+}

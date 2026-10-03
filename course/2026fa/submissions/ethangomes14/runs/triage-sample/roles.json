@@ -1,0 +1,112 @@
+[
+  {
+    "role_id": "sigma-data-engineer-nyc",
+    "company": "Sigma Computing",
+    "title": "Data Engineer",
+    "sponsorship": {
+      "p": 0.9,
+      "tier": "Proven",
+      "source": "model-judgment"
+    },
+    "fit": {
+      "p": 0.7,
+      "source": "model-judgment"
+    },
+    "liveness": {
+      "factor": 1,
+      "source": "record"
+    },
+    "timeline": {
+      "factor": 1,
+      "source": "your-input"
+    }
+  },
+  {
+    "role_id": "klaviyo-analytics-engineer-boston",
+    "company": "Klaviyo",
+    "title": "Analytics Engineer",
+    "sponsorship": {
+      "p": 0.9,
+      "tier": "Proven",
+      "source": "model-judgment"
+    },
+    "fit": {
+      "p": 0.7,
+      "source": "model-judgment"
+    },
+    "liveness": {
+      "factor": 1,
+      "source": "record"
+    },
+    "timeline": {
+      "factor": 1,
+      "source": "your-input"
+    }
+  },
+  {
+    "role_id": "gusto-senior-data-engineer",
+    "company": "Gusto",
+    "title": "Senior Data Engineer",
+    "sponsorship": {
+      "p": 0.9,
+      "tier": "Proven",
+      "source": "model-judgment"
+    },
+    "fit": {
+      "p": 0.5,
+      "source": "model-judgment"
+    },
+    "liveness": {
+      "factor": 1,
+      "source": "record"
+    },
+    "timeline": {
+      "factor": 1,
+      "source": "your-input"
+    }
+  },
+  {
+    "role_id": "airbnb-senior-staff-data-engineer",
+    "company": "Airbnb",
+    "title": "Senior Staff Data Engineer, Foundational Data",
+    "sponsorship": {
+      "p": 0.4,
+      "tier": "Possible",
+      "source": "model-judgment"
+    },
+    "fit": {
+      "p": 0.3,
+      "source": "model-judgment"
+    },
+    "liveness": {
+      "factor": 1,
+      "source": "record"
+    },
+    "timeline": {
+      "factor": 1,
+      "source": "your-input"
+    }
+  },
+  {
+    "role_id": "stripe-swe-data-orchestration",
+    "company": "Stripe",
+    "title": "Software Engineer, Data Orchestration",
+    "sponsorship": {
+      "p": 0.4,
+      "tier": "Possible",
+      "source": "model-judgment"
+    },
+    "fit": {
+      "p": 0.7,
+      "source": "model-judgment"
+    },
+    "liveness": {
+      "factor": 0,
+      "source": "record"
+    },
+    "timeline": {
+      "factor": 1,
+      "source": "your-input"
+    }
+  }
+]
