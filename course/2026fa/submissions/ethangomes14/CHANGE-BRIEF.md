@@ -195,3 +195,11 @@ All outputs go under `course/2026fa/submissions/ethangomes14/runs/`, which exist
 ### Revisions (append only — newest last)
 
 - **2026-10-03 — pre-commit drafting.** Switched from the author's own details to the fictional persona "Electrifier" (no personal details). Widened the target from "Data Engineer" to the Data Engineer title family with exclusions. Labelled the sponsorship score `model-judgment` (author's decision). Added the six-state coverage finding and predictions P3–P4. Nothing in this file had been committed before this entry.
+- **2026-10-03 — outcomes after the first sample run** (predictions above unchanged; evidence in `WORKED-RUN.md`, `TEST-REPORT.md`, `logs/runs/2026fa-ethangomes14-1.md`).
+  - **P1 — confirmed.** "Gemini" and "Robinhood" came back `not-in-csv`. Their legal names (GEMINI SPACE STATION LLC, ROBINHOOD MARKETS INC) are in the file. A what-if run with legal names turned Gemini into Proven / Apply 0.465.
+  - **P2 — confirmed as a limit, not observable.** Nothing in the output reveals stale sponsors; it stays on the "cannot verify" list.
+  - **P3 — not tested.** All seven sample companies are headquartered in CA, NY or MA.
+  - **P4 — partly tested.** Exclusions worked on real rows (Klaviyo's "Engineering Manager Data Exchange", Airbnb's "Data Scientist" not counted). No real over-match was seen.
+  - **P5 — wrong for this sample.** Skip+unscored was 43%, and 14% with legal names. The sample was found by browsing boards of companies already known to sponsor, so it is not a fair test.
+  - **F1–F7** behaved as predicted (`TEST-REPORT.md` §5). **F8** was not seen on real data.
+  - **Not predicted:** the clean-checkout run exposed an out-dir safety bug (fixed in `4b3c9de`). A band-Consider gets the wrong next-action text.
