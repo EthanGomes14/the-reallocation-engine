@@ -22,5 +22,5 @@ Known limitations:
   - The liveness checker can call a redirected dead posting active; the API cross-check catches this only for Greenhouse links.
   - Fit is Claude's rating from titles only.
   - The sample was biased toward sponsors.
-  - Not run on Node 20 or in CI before the PR.
+  - Not run locally on Node 20 (CI's version); CI runs when the PR is opened.
   - E-Verify, funding and wages are out of scope.

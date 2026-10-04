@@ -125,7 +125,7 @@
   - Stripe is "uncertain" to the checker but 200 to the API. It stays Skip, because the new check only ever closes a gate. That's a case where I might decide differently myself.
 - **What broke:** one of the new tests was written wrong (it checked the wrong thing, not a code bug) and was rewritten. There are now 15 tests.
 - **Next:** re-run the screen and the 15 tests myself so the attestation covers v0.2.0.
-- **Evidence:** `TEST-REPORT.md` §11, `logs/runs/2026fa-ethangomes14-2.md`, `runs/screen-ghost/`.
+- **Evidence:** commit `7ac40ed`; `TEST-REPORT.md` §11, `logs/runs/2026fa-ethangomes14-2.md`, `runs/screen-ghost/`.
 
 ## 2026-10-03 — Removing the visa-timeline check (v0.3.0)
 
@@ -137,7 +137,7 @@
   - My sample results didn't change.
   - The recipe now says openly that it departs from the assignment on this point.
 - **What it means for me:** for every Apply, I have to check the hiring timing against my OPT dates myself.
-- **Evidence:** `TEST-REPORT.md` §12, `logs/runs/2026fa-ethangomes14-3.md`.
+- **Evidence:** commit `7ac40ed`; `TEST-REPORT.md` §12, `logs/runs/2026fa-ethangomes14-3.md`.
 
 ## 2026-10-03 — Renaming "triage" to "sponsor-screen" (v0.3.1)
 
@@ -146,7 +146,7 @@
   - the program, the tests, the output files and the output folders were renamed
   - behaviour is identical: same results, 13/13 tests
 - **What didn't change, on purpose:** the older pasted outputs in the test report, worked run, run logs and this log still show `triage.mjs`, because that's what was actually run at the time. A note maps the old names to the new ones.
-- **Evidence:** `TEST-REPORT.md` §13, `logs/runs/2026fa-ethangomes14-4.md`.
+- **Evidence:** commit `7ac40ed` (renames recorded by git as moves); `TEST-REPORT.md` §13, `logs/runs/2026fa-ethangomes14-4.md`.
 
 ## 2026-10-03 — Checking the recipe against the assignment, and putting the timeline back (v0.4.0)
 
@@ -161,7 +161,7 @@
   - Sample results stayed the same, and the "after the OPT deadline" check skips everything again.
   - Looking back, removing the timeline gate earlier and then restoring it cost a round trip. Checking against the rubric first would have saved that.
 - **Next:** re-run `sponsor-screen.mjs` and the 15 tests for v0.4.0.
-- **Evidence:** `TEST-REPORT.md` §14, `logs/runs/2026fa-ethangomes14-5.md`.
+- **Evidence:** commit `7ac40ed` (code) and `070f9de` (one-page justification, current-version worked run, my v0.4.0 re-run, final clean checkout); `TEST-REPORT.md` §14–§15, `logs/runs/2026fa-ethangomes14-5.md`.
 
 ## Who did what — summary
 

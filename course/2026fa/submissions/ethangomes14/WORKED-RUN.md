@@ -284,7 +284,7 @@ Nothing was scored and no outputs were written.
 ### Did not test
 
 - Node 20 (CI's version); only Node 25.8.0.
-- The CI workflow (branch not pushed yet).
+- The CI workflow. The branch is pushed (commit `070f9de`); CI runs when the PR is opened.
 - A live run with a person clearing every gate.
 - The six-state blind spot (P3) and title over-match (F8) on real postings.
 - A real `expired` verdict from the liveness checker (only a fixture, and the invented-ID case that came back active).
